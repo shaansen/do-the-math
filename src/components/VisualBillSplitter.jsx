@@ -215,45 +215,6 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         </div>
       )}
 
-      {/* Manual Entry Section - Always visible */}
-      <div className="manual-entry-section">
-        <button
-          onClick={() => setShowManualEntry(!showManualEntry)}
-          className="toggle-manual-button"
-        >
-          {showManualEntry ? '−' : '+'} Add Price Manually
-        </button>
-        
-        {showManualEntry && (
-          <div className="manual-entry-form">
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              placeholder="Enter price (e.g., 12.99)"
-              value={manualPriceInput}
-              onChange={(e) => setManualPriceInput(e.target.value)}
-              className="manual-price-input"
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  addManualPrice()
-                }
-              }}
-            />
-            <button
-              onClick={addManualPrice}
-              disabled={!manualPriceInput || parseFloat(manualPriceInput) <= 0}
-              className="add-manual-button"
-            >
-              Add
-            </button>
-          </div>
-        )}
-        <p className="manual-entry-hint">
-          Add any prices that OCR missed or items not shown on the bill
-        </p>
-      </div>
-
       {/* Prices List - Shows OCR + Manual prices together */}
       {detectedPrices.length > 0 && (
         <>
@@ -310,7 +271,46 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         </>
       )}
 
-      {/* Tax Input - Always visible */}
+      {/* Manual Entry Section */}
+      <div className="manual-entry-section">
+        <button
+          onClick={() => setShowManualEntry(!showManualEntry)}
+          className="toggle-manual-button"
+        >
+          {showManualEntry ? '−' : '+'} Add Price Manually
+        </button>
+        
+        {showManualEntry && (
+          <div className="manual-entry-form">
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              placeholder="Enter price (e.g., 12.99)"
+              value={manualPriceInput}
+              onChange={(e) => setManualPriceInput(e.target.value)}
+              className="manual-price-input"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  addManualPrice()
+                }
+              }}
+            />
+            <button
+              onClick={addManualPrice}
+              disabled={!manualPriceInput || parseFloat(manualPriceInput) <= 0}
+              className="add-manual-button"
+            >
+              Add
+            </button>
+          </div>
+        )}
+        <p className="manual-entry-hint">
+          Add any prices that OCR missed or items not shown on the bill
+        </p>
+      </div>
+
+      {/* Tax Input */}
       <div className="manual-input-section">
         <label className="input-label">
           <span>Tax Amount ($) - Enter manually</span>
