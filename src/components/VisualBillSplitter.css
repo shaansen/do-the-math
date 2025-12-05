@@ -117,9 +117,9 @@
 .price-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
   width: 100%;
+  padding-right: 40px; /* Space for remove button */
 }
 
 .price-item:hover {
@@ -184,7 +184,7 @@
 
 .price-summary {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 }
 
