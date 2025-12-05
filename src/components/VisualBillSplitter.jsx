@@ -10,6 +10,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
   const [tipPercentage, setTipPercentage] = useState('')
   const [manualPriceInput, setManualPriceInput] = useState('')
   const [showManualEntry, setShowManualEntry] = useState(false)
+  const [ocrError, setOcrError] = useState(null)
   const imageRef = useRef(null)
 
   useEffect(() => {
@@ -26,13 +27,20 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
     if (!billImage) return
     
     setIsProcessing(true)
+    setOcrError(null)
     
     try {
       const { prices, total } = await ocrService.extractPrices(billImage)
+      
+      if (prices.length === 0) {
+        setOcrError('No prices detected. Try adding them manually or use a clearer image.')
+      }
+      
       setDetectedPrices(prices)
       setTotalAmount(total)
     } catch (err) {
       console.error('Error extracting prices:', err)
+      setOcrError(`OCR Error: ${err.message || 'Failed to process image. Please try adding prices manually.'}`)
     } finally {
       setIsProcessing(false)
     }
@@ -181,8 +189,12 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         <h3>💰 Bill Items</h3>
         {isProcessing ? (
           <p className="processing">Scanning bill for prices...</p>
-        ) : (
+        ) : detectedPrices.length > 0 ? (
           <p>Click prices to toggle: <strong>Both</strong> → <strong>{person1Name}</strong> → <strong>{person2Name}</strong> → <strong>Both</strong></p>
+        ) : ocrError ? (
+          <p className="error-text">{ocrError}</p>
+        ) : (
+          <p>Upload a bill image to automatically detect prices, or add them manually below.</p>
         )}
       </div>
 
