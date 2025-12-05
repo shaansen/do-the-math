@@ -1,0 +1,120 @@
+.bill-summary-container {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.bill-summary-container h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+}
+
+.person1-card {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.person2-card {
+  border-color: #764ba2;
+  background: linear-gradient(135deg, rgba(118, 75, 162, 0.05) 0%, rgba(102, 126, 234, 0.05) 100%);
+}
+
+.summary-card h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.95rem;
+}
+
+.summary-line:last-child {
+  border-bottom: none;
+}
+
+.summary-line span:first-child {
+  color: #666;
+}
+
+.summary-line span:last-child {
+  color: #333;
+  font-weight: 600;
+}
+
+.total-line {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #333;
+  font-size: 1.1rem;
+}
+
+.total-line span {
+  font-weight: 700;
+  color: #333;
+}
+
+.grand-total {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.grand-total-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
+}
+
+.grand-total-line:first-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.grand-total-line:last-child {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .bill-summary-container {
+    padding: 1.5rem;
+  }
+}
+

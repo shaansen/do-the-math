@@ -1,0 +1,96 @@
+.item-assignment-container {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.item-assignment-container h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.item-row:hover {
+  background: #e9ecef;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.item-name {
+  font-weight: 500;
+  color: #333;
+  font-size: 1rem;
+}
+
+.item-price {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.assignment-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.assign-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: #666;
+}
+
+.assign-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.assign-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .item-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .assignment-buttons {
+    width: 100%;
+  }
+  
+  .assign-btn {
+    flex: 1;
+  }
+}
+
