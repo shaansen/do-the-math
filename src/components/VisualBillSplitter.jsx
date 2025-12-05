@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import ocrService from '../services/ocrService'
 import imageProcessor from '../services/imageProcessor'
+import AvatarToggle from './AvatarToggle'
 import './VisualBillSplitter.css'
 
 function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name, onReset }) {
@@ -247,16 +248,12 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
                       <span className="manual-badge" title="Manually added">✏️</span>
                     )}
                   </div>
-                  <button
-                    className="toggle-button"
+                  <AvatarToggle
+                    assignment={item.assignment}
+                    person1Name={person1Name}
+                    person2Name={person2Name}
                     onClick={() => toggleAssignment(item.id)}
-                    style={{
-                      backgroundColor: getAssignmentColor(item.assignment),
-                      color: 'white'
-                    }}
-                  >
-                    {getAssignmentLabel(item.assignment)}
-                  </button>
+                  />
                   <button
                     className="remove-price-button"
                     onClick={() => removePrice(item.id)}
@@ -284,6 +281,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
           <div className="manual-entry-form">
             <input
               type="number"
+              inputMode="decimal"
               step="0.01"
               min="0"
               placeholder="Enter price (e.g., 12.99)"
@@ -316,6 +314,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
           <span>Tax Amount ($) - Enter manually</span>
           <input
             type="number"
+            inputMode="decimal"
             step="0.01"
             min="0"
             placeholder="0.00"
@@ -334,6 +333,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
           <div className="tip-input-group">
             <input
               type="number"
+              inputMode="decimal"
               step="0.1"
               min="0"
               max="100"
