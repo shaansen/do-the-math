@@ -241,6 +241,12 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
                   style={{ borderLeftColor: getAssignmentColor(item.assignment) }}
                 >
                   <div className="price-row">
+                    <AvatarToggle
+                      assignment={item.assignment}
+                      person1Name={person1Name}
+                      person2Name={person2Name}
+                      onClick={() => toggleAssignment(item.id)}
+                    />
                     <div className="price-header">
                       <div className="price-value-large">
                         ${item.price.toFixed(2)}
@@ -249,12 +255,6 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
                         <span className="manual-badge" title="Manually added">✏️</span>
                       )}
                     </div>
-                    <AvatarToggle
-                      assignment={item.assignment}
-                      person1Name={person1Name}
-                      person2Name={person2Name}
-                      onClick={() => toggleAssignment(item.id)}
-                    />
                   </div>
                   <button
                     className="remove-price-button"
@@ -398,13 +398,6 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
               <div className="summary-amount">
                 ${totals.person1Final.toFixed(2)}
               </div>
-            </div>
-          </div>
-          
-          <div className="summary-card shared-summary">
-            <h4>Shared (50% each)</h4>
-            <div className="summary-amount">
-              ${totals.sharedSubtotal.toFixed(2)}
             </div>
           </div>
           

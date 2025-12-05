@@ -50,22 +50,6 @@ function App() {
           />
         ) : (
           <div className="bill-container">
-            <div className="names-input">
-              <input
-                type="text"
-                placeholder="Your name"
-                value={person1Name}
-                onChange={(e) => setPerson1Name(e.target.value)}
-                className="name-input"
-              />
-              <input
-                type="text"
-                placeholder="Partner's name"
-                value={person2Name}
-                onChange={(e) => setPerson2Name(e.target.value)}
-                className="name-input"
-              />
-            </div>
             <VisualBillSplitter
               billImage={billImage}
               onItemsReady={handleItemsReady}
