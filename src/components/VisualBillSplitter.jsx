@@ -193,7 +193,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         </div>
       )}
 
-      {/* Manual Entry Section */}
+      {/* Manual Entry Section - Always visible */}
       <div className="manual-entry-section">
         <button
           onClick={() => setShowManualEntry(!showManualEntry)}
@@ -212,6 +212,11 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
               value={manualPriceInput}
               onChange={(e) => setManualPriceInput(e.target.value)}
               className="manual-price-input"
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  addManualPrice()
+                }
+              }}
             />
             <button
               onClick={addManualPrice}
@@ -222,9 +227,12 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
             </button>
           </div>
         )}
+        <p className="manual-entry-hint">
+          Add any prices that OCR missed or items not shown on the bill
+        </p>
       </div>
 
-      {/* Prices List */}
+      {/* Prices List - Shows OCR + Manual prices together */}
       {detectedPrices.length > 0 && (
         <>
           {billImage && (
@@ -239,7 +247,8 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
           )}
 
           <div className="prices-list">
-            <h3>Items ({detectedPrices.length})</h3>
+            <h3>All Items ({detectedPrices.length})</h3>
+            <p className="prices-hint">OCR-detected and manually added prices combined</p>
             <div className="prices-grid">
               {detectedPrices.map((item) => (
                 <div
@@ -247,8 +256,13 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
                   className="price-item"
                   style={{ borderLeftColor: getAssignmentColor(item.assignment) }}
                 >
-                  <div className="price-value-large">
-                    ${item.price.toFixed(2)}
+                  <div className="price-header">
+                    <div className="price-value-large">
+                      ${item.price.toFixed(2)}
+                    </div>
+                    {item.id.startsWith('manual_') && (
+                      <span className="manual-badge" title="Manually added">✏️</span>
+                    )}
                   </div>
                   <button
                     className="toggle-button"
@@ -274,10 +288,10 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         </>
       )}
 
-      {/* Tax Input */}
+      {/* Tax Input - Always visible */}
       <div className="manual-input-section">
         <label className="input-label">
-          <span>Tax Amount ($)</span>
+          <span>Tax Amount ($) - Enter manually</span>
           <input
             type="number"
             step="0.01"
@@ -288,6 +302,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
             className="tax-input"
           />
         </label>
+        <p className="input-hint">Tax will be split proportionally based on each person's share</p>
       </div>
 
       {/* Tip Calculator */}

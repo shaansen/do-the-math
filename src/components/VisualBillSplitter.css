@@ -457,6 +457,28 @@
   color: #f44336;
 }
 
+.manual-entry-hint,
+.input-hint,
+.prices-hint {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+}
+
+.price-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.manual-badge {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
 /* Prevent text selection */
 .price-item,
 .toggle-button {
