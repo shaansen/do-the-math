@@ -6,7 +6,7 @@ function AvatarToggle({ assignment, person1Name, person2Name, onClick }) {
       return (
         <div className="avatar-single">
           <div className="avatar avatar-person1" title={person1Name}>
-            👨🏽
+            👤🏽
           </div>
         </div>
       )
@@ -14,7 +14,7 @@ function AvatarToggle({ assignment, person1Name, person2Name, onClick }) {
       return (
         <div className="avatar-single">
           <div className="avatar avatar-person2" title={person2Name}>
-            👱‍♀️
+            👩🏻
           </div>
         </div>
       )
@@ -22,10 +22,10 @@ function AvatarToggle({ assignment, person1Name, person2Name, onClick }) {
       return (
         <div className="avatar-both">
           <div className="avatar avatar-person1" title={person1Name}>
-            👨🏽
+            👤🏽
           </div>
           <div className="avatar avatar-person2" title={person2Name}>
-            👱‍♀️
+            👩🏻
           </div>
         </div>
       )
