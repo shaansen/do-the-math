@@ -10,8 +10,8 @@ function App() {
   const [subtotal, setSubtotal] = useState(0)
   const [tax, setTax] = useState(0)
   const [total, setTotal] = useState(0)
-  const [person1Name, setPerson1Name] = useState('You')
-  const [person2Name, setPerson2Name] = useState('Your Partner')
+  const [person1Name, setPerson1Name] = useState('Shantanu')
+  const [person2Name, setPerson2Name] = useState('Charlie')
   const [showSummary, setShowSummary] = useState(false)
 
   const handleImageSelect = (image) => {
@@ -62,6 +62,7 @@ function App() {
                 value={person1Name}
                 onChange={(e) => setPerson1Name(e.target.value)}
                 className="name-input"
+                readOnly
               />
               <input
                 type="text"
@@ -69,6 +70,7 @@ function App() {
                 value={person2Name}
                 onChange={(e) => setPerson2Name(e.target.value)}
                 className="name-input"
+                readOnly
               />
             </div>
             <VisualBillSplitter
