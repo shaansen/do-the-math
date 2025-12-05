@@ -114,6 +114,14 @@
   position: relative;
 }
 
+.price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
 .price-item:hover {
   background: #e9ecef;
   transform: translateY(-2px);
@@ -124,7 +132,7 @@
   font-size: 1.8rem;
   font-weight: 700;
   color: #333;
-  text-align: center;
+  text-align: left;
 }
 
 .toggle-button {
@@ -278,6 +286,15 @@
   
   .bill-image-small {
     max-height: 200px;
+  }
+  
+  .price-row {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .price-value-large {
+    font-size: 1.5rem;
   }
 }
 
@@ -482,9 +499,9 @@
 .price-header {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
   position: relative;
+  flex: 1;
 }
 
 .manual-badge {

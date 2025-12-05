@@ -1,12 +1,13 @@
 .avatar-toggle {
-  width: 100%;
-  padding: 0.75rem 1rem;
+  flex-shrink: 0;
+  padding: 0.5rem 0.75rem;
   border: 2px solid #e0e0e0;
   background: white;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
-  min-height: 60px;
+  min-height: 56px;
+  min-width: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
