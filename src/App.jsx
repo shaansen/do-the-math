@@ -62,7 +62,6 @@ function App() {
                 value={person1Name}
                 onChange={(e) => setPerson1Name(e.target.value)}
                 className="name-input"
-                readOnly
               />
               <input
                 type="text"
@@ -70,7 +69,6 @@ function App() {
                 value={person2Name}
                 onChange={(e) => setPerson2Name(e.target.value)}
                 className="name-input"
-                readOnly
               />
             </div>
             <VisualBillSplitter
