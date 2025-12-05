@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ImageUpload from './components/ImageUpload'
-import ItemAssignment from './components/ItemAssignment'
+import VisualBillSplitter from './components/VisualBillSplitter'
 import BillSummary from './components/BillSummary'
 import './App.css'
 
@@ -12,18 +12,23 @@ function App() {
   const [total, setTotal] = useState(0)
   const [person1Name, setPerson1Name] = useState('You')
   const [person2Name, setPerson2Name] = useState('Your Partner')
+  const [showSummary, setShowSummary] = useState(false)
 
-  const handleImageProcessed = (items, subtotalAmount, taxAmount, totalAmount) => {
+  const handleImageSelect = (image) => {
+    setBillImage(image)
+    setBillItems([])
+    setShowSummary(false)
+    setSubtotal(0)
+    setTax(0)
+    setTotal(0)
+  }
+
+  const handleItemsReady = (items, subtotalAmount, taxAmount, totalAmount) => {
     setBillItems(items)
     setSubtotal(subtotalAmount)
     setTax(taxAmount)
     setTotal(totalAmount)
-  }
-
-  const handleItemAssignment = (itemIndex, assignment) => {
-    const updatedItems = [...billItems]
-    updatedItems[itemIndex].assignment = assignment
-    setBillItems(updatedItems)
+    setShowSummary(true)
   }
 
   const resetBill = () => {
@@ -32,6 +37,7 @@ function App() {
     setSubtotal(0)
     setTax(0)
     setTotal(0)
+    setShowSummary(false)
   }
 
   return (
@@ -44,14 +50,9 @@ function App() {
       <main className="app-main">
         {!billImage ? (
           <ImageUpload
-            onImageSelect={setBillImage}
-            onImageProcessed={handleImageProcessed}
+            onImageSelect={handleImageSelect}
+            skipAutoProcess={true}
           />
-        ) : billItems.length === 0 ? (
-          <div className="loading-container">
-            <div className="spinner"></div>
-            <p>Processing your bill...</p>
-          </div>
         ) : (
           <div className="bill-container">
             <div className="names-input">
@@ -70,23 +71,28 @@ function App() {
                 className="name-input"
               />
             </div>
-            <ItemAssignment
-              items={billItems}
-              onItemAssignment={handleItemAssignment}
+            <VisualBillSplitter
+              billImage={billImage}
+              onItemsReady={handleItemsReady}
               person1Name={person1Name}
               person2Name={person2Name}
+              onReset={resetBill}
             />
-            <BillSummary
-              items={billItems}
-              subtotal={subtotal}
-              tax={tax}
-              total={total}
-              person1Name={person1Name}
-              person2Name={person2Name}
-            />
-            <button onClick={resetBill} className="reset-button">
-              Start New Bill
-            </button>
+            {showSummary && billItems.length > 0 && (
+              <>
+                <BillSummary
+                  items={billItems}
+                  subtotal={subtotal}
+                  tax={tax}
+                  total={total}
+                  person1Name={person1Name}
+                  person2Name={person2Name}
+                />
+                <button onClick={resetBill} className="reset-button">
+                  Start New Bill
+                </button>
+              </>
+            )}
           </div>
         )}
       </main>

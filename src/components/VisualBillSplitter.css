@@ -1,0 +1,245 @@
+.visual-splitter-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.instructions {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.instructions h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.instructions p {
+  color: #666;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.bill-image-container {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  max-height: 70vh;
+  cursor: crosshair;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bill-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+.bill-overlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.action-button {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  min-height: 48px;
+}
+
+.action-button:active {
+  transform: scale(0.98);
+}
+
+.action-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.extract-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.extract-button:hover:not(:disabled) {
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.clear-button {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.clear-button:hover {
+  background: #e0e0e0;
+}
+
+.price-list {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.price-list h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  gap: 1rem;
+}
+
+.price-item:hover {
+  background: #e9ecef;
+}
+
+.price-item.selected {
+  border-color: #667eea;
+  background: #e7ecff;
+}
+
+.price-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 120px;
+}
+
+.error-badge {
+  font-size: 1rem;
+}
+
+.assignment-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.assign-btn {
+  padding: 0.75rem 1.25rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: #666;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.assign-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.assign-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  color: white;
+}
+
+.remove-btn {
+  padding: 0.75rem 1rem;
+  border: 2px solid #ff6b6b;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #ff6b6b;
+  transition: all 0.2s;
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+.remove-btn:hover {
+  background: #ff6b6b;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .bill-image-container {
+    max-height: 50vh;
+    padding: 0.5rem;
+  }
+  
+  .price-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .assignment-buttons {
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .assign-btn,
+  .remove-btn {
+    flex: 1;
+  }
+  
+  .price-value {
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .instructions {
+    padding: 1rem;
+  }
+  
+  .action-button {
+    flex: 1;
+    min-width: 150px;
+  }
+}
+
+/* Prevent text selection during drawing */
+.bill-image-container {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+

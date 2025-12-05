@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { createWorker } from 'tesseract.js'
 import './ImageUpload.css'
 
-function ImageUpload({ onImageSelect, onImageProcessed }) {
+function ImageUpload({ onImageSelect, onImageProcessed, skipAutoProcess = false }) {
   const [isProcessing, setIsProcessing] = useState(false)
   const [preview, setPreview] = useState(null)
   const fileInputRef = useRef(null)
@@ -19,6 +19,18 @@ function ImageUpload({ onImageSelect, onImageProcessed }) {
   }
 
   const processImage = async (file) => {
+    if (skipAutoProcess) {
+      // Just load the image, don't process it
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const imageDataUrl = reader.result
+        setPreview(imageDataUrl)
+        onImageSelect(imageDataUrl)
+      }
+      reader.readAsDataURL(file)
+      return
+    }
+
     setIsProcessing(true)
     setError(null)
     
