@@ -31,7 +31,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: auto;
   max-height: 70vh;
-  cursor: crosshair;
+  cursor: pointer;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -41,7 +41,7 @@
   display: block;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: none;
+  touch-action: manipulation;
   pointer-events: auto;
 }
 
@@ -49,7 +49,8 @@
   position: absolute;
   top: 1rem;
   left: 1rem;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
   z-index: 10;
 }
 
@@ -241,5 +242,101 @@
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
+}
+
+.extracting {
+  color: #667eea;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+.processing-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: #666;
+}
+
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.price-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.summary-card h4 {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.summary-amount {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.person1-summary {
+  border-top: 4px solid #4caf50;
+}
+
+.person2-summary {
+  border-top: 4px solid #f44336;
+}
+
+.shared-summary {
+  border-top: 4px solid #ff9800;
+}
+
+.total-display {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .price-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-card {
+    padding: 1rem;
+  }
+  
+  .summary-amount {
+    font-size: 1.5rem;
+  }
 }
 
