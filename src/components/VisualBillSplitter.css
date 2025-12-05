@@ -28,6 +28,12 @@
   font-weight: 500;
 }
 
+.error-text {
+  color: #f44336;
+  font-weight: 500;
+  margin: 0;
+}
+
 .processing-container {
   display: flex;
   flex-direction: column;
