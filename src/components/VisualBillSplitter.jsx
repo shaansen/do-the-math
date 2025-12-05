@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import ocrService from '../services/ocrService'
+import imageProcessor from '../services/imageProcessor'
 import './VisualBillSplitter.css'
 
 function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name, onReset }) {
@@ -30,7 +31,15 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
     setOcrError(null)
     
     try {
-      const { prices, total } = await ocrService.extractPrices(billImage)
+      // Automatically enhance image for better OCR accuracy
+      console.log('Enhancing image for OCR...')
+      const enhancedImage = await imageProcessor.processImageForOCR(billImage)
+      
+      // Upscale if image is too small
+      const processedImage = await imageProcessor.upscaleIfNeeded(enhancedImage)
+      
+      console.log('Running OCR on enhanced image...')
+      const { prices, total } = await ocrService.extractPrices(processedImage)
       
       if (prices.length === 0) {
         setOcrError('No prices detected. Try adding them manually or use a clearer image.')
@@ -201,7 +210,8 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
       {isProcessing && (
         <div className="processing-container">
           <div className="spinner"></div>
-          <p>Extracting all prices from bill...</p>
+          <p>Enhancing image and extracting prices...</p>
+          <p className="processing-subtext">Auto-adjusting contrast, brightness, and resolution for better OCR accuracy</p>
         </div>
       )}
 
