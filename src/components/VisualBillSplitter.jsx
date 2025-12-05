@@ -445,18 +445,26 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         </div>
       )}
 
-      {detectedPrices.length > 0 && (
-        <button
-          onClick={() => {
-            setDetectedPrices([])
-            setTotalAmount(0)
-            setManualTax('')
-            setTipPercentage('')
-          }}
-          className="action-button clear-button"
-        >
-          🔄 Clear All
-        </button>
+      {(detectedPrices.length > 0 || manualTax || tipPercentage) && (
+        <div className="action-buttons-row">
+          <button
+            onClick={() => {
+              setDetectedPrices([])
+              setTotalAmount(0)
+              setManualTax('')
+              setTipPercentage('')
+            }}
+            className="action-button clear-button"
+          >
+            🔄 Clear All
+          </button>
+          <button
+            onClick={onReset}
+            className="action-button reset-button"
+          >
+            🆕 Start New Bill
+          </button>
+        </div>
       )}
     </div>
   )

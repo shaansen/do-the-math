@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import ImageUpload from './components/ImageUpload'
 import VisualBillSplitter from './components/VisualBillSplitter'
-import BillSummary from './components/BillSummary'
 import './App.css'
 
 function App() {
@@ -12,12 +11,10 @@ function App() {
   const [total, setTotal] = useState(0)
   const [person1Name, setPerson1Name] = useState('Shantanu')
   const [person2Name, setPerson2Name] = useState('Charlie')
-  const [showSummary, setShowSummary] = useState(false)
 
   const handleImageSelect = (image) => {
     setBillImage(image)
     setBillItems([])
-    setShowSummary(false)
     setSubtotal(0)
     setTax(0)
     setTotal(0)
@@ -28,7 +25,6 @@ function App() {
     setSubtotal(subtotalAmount)
     setTax(taxAmount)
     setTotal(totalAmount)
-    setShowSummary(true)
   }
 
   const resetBill = () => {
@@ -37,7 +33,6 @@ function App() {
     setSubtotal(0)
     setTax(0)
     setTotal(0)
-    setShowSummary(false)
   }
 
   return (
@@ -78,21 +73,6 @@ function App() {
               person2Name={person2Name}
               onReset={resetBill}
             />
-            {showSummary && billItems.length > 0 && (
-              <>
-                <BillSummary
-                  items={billItems}
-                  subtotal={subtotal}
-                  tax={tax}
-                  total={total}
-                  person1Name={person1Name}
-                  person2Name={person2Name}
-                />
-                <button onClick={resetBill} className="reset-button">
-                  Start New Bill
-                </button>
-              </>
-            )}
           </div>
         )}
       </main>

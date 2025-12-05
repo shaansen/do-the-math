@@ -267,6 +267,21 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.action-buttons-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.reset-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.reset-button:hover {
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
 @media (max-width: 768px) {
   .prices-grid {
     grid-template-columns: 1fr;
