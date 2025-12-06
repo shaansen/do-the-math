@@ -508,6 +508,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
               setTotalAmount(0)
               setManualTax('')
               setTipPercentage('')
+              setWhoPaid(null)
             }}
             className="action-button clear-button"
           >
