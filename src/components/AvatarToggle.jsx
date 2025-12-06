@@ -5,14 +5,9 @@ import { micah } from '@dicebear/collection'
 function AvatarToggle({ assignment, person1Name, person2Name, onClick }) {
   // Create avatars for each person using their names as seeds for consistency
   const avatar1 = createAvatar(micah, {
-    seed: person1Name,
-    baseColor: ['b6e3f4', 'c0aede', 'd1d4f9', 'ffd5dc', 'ffdfbf'],
-    skinColor: ['ecad80', 'f2d3b1', '9e5622', '763900', 'af8670'],
-    hair: ['fonze', 'dougFunny', 'pixie', 'full', 'turban'],
-    hairColor: ['000000', '77311d', 'fc909f', 'd5b886', '915b3d'],
-    mouth: ['smile', 'sad', 'surprised'],
-    shirt: ['polo', 'hoodie', 'tee01', 'tee02', 'dressShirt'],
-    shirtColor: ['262e33', '65c9ff', '5199e4', '25557c', 'e6e6fa']
+    seed: 'Destiny',
+    baseColor: ['ac6651'],
+    hairColor: ['000000']
   })
 
   const avatar2 = createAvatar(micah, {
