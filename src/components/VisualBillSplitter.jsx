@@ -209,36 +209,40 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         )}
       </div>
 
-      {/* Who Paid Selector */}
-      <div className="who-paid-section">
-        <label className="who-paid-label">Who paid for this bill?</label>
-        <div className="who-paid-buttons">
-          <button
-            className={`who-paid-button ${whoPaid === 'person1' ? 'active' : ''}`}
-            onClick={() => setWhoPaid(whoPaid === 'person1' ? null : 'person1')}
-          >
-            <AvatarToggle
-              assignment="person1"
-              person1Name={person1Name}
-              person2Name={person2Name}
-              onClick={() => {}}
-            />
-            <span>{person1Name}</span>
-          </button>
-          <button
-            className={`who-paid-button ${whoPaid === 'person2' ? 'active' : ''}`}
-            onClick={() => setWhoPaid(whoPaid === 'person2' ? null : 'person2')}
-          >
-            <AvatarToggle
-              assignment="person2"
-              person1Name={person1Name}
-              person2Name={person2Name}
-              onClick={() => {}}
-            />
-            <span>{person2Name}</span>
-          </button>
-        </div>
-      </div>
+      {!isProcessing && (
+        <>
+          {/* Who Paid Selector */}
+          <div className="who-paid-section">
+            <label className="who-paid-label">Who paid for this bill?</label>
+            <div className="who-paid-buttons">
+              <button
+                className={`who-paid-button ${whoPaid === 'person1' ? 'active' : ''}`}
+                onClick={() => setWhoPaid(whoPaid === 'person1' ? null : 'person1')}
+              >
+                <AvatarToggle
+                  assignment="person1"
+                  person1Name={person1Name}
+                  person2Name={person2Name}
+                  onClick={() => {}}
+                />
+                <span>{person1Name}</span>
+              </button>
+              <button
+                className={`who-paid-button ${whoPaid === 'person2' ? 'active' : ''}`}
+                onClick={() => setWhoPaid(whoPaid === 'person2' ? null : 'person2')}
+              >
+                <AvatarToggle
+                  assignment="person2"
+                  person1Name={person1Name}
+                  person2Name={person2Name}
+                  onClick={() => {}}
+                />
+                <span>{person2Name}</span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       {isProcessing && (
         <div className="processing-container">
@@ -503,22 +507,10 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
       {(detectedPrices.length > 0 || manualTax || tipPercentage) && (
         <div className="action-buttons-row">
           <button
-            onClick={() => {
-              setDetectedPrices([])
-              setTotalAmount(0)
-              setManualTax('')
-              setTipPercentage('')
-              setWhoPaid(null)
-            }}
-            className="action-button clear-button"
-          >
-            🔄 Clear All
-          </button>
-          <button
             onClick={onReset}
             className="action-button reset-button"
           >
-            🆕 Start New Bill
+            🔄 Reset - Add New Bill
           </button>
         </div>
       )}
