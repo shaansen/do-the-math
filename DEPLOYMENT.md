@@ -5,6 +5,7 @@ This guide will help you deploy the Do the math app to GitHub Pages.
 ## Quick Start (Automatic Deployment)
 
 1. **Push your code to GitHub**
+
    ```bash
    git init
    git add .
@@ -15,6 +16,7 @@ This guide will help you deploy the Do the math app to GitHub Pages.
    ```
 
 2. **Enable GitHub Pages in your repository:**
+
    - Go to your repository on GitHub
    - Click on **Settings** tab
    - Scroll down to **Pages** in the left sidebar
@@ -25,6 +27,7 @@ This guide will help you deploy the Do the math app to GitHub Pages.
    - `https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/`
 
 That's it! The GitHub Actions workflow will automatically:
+
 - Build your app with the correct base path
 - Deploy to GitHub Pages
 - Update on every push to `main` branch
@@ -34,12 +37,14 @@ That's it! The GitHub Actions workflow will automatically:
 If you prefer to deploy manually:
 
 1. **Build the app with the correct base path:**
+
    ```bash
    # Replace 'YOUR_REPO_NAME' with your actual repository name
    BASE_PATH='/YOUR_REPO_NAME/' npm run build
    ```
 
 2. **Deploy to gh-pages branch:**
+
    ```bash
    npm run deploy:gh-pages
    ```
@@ -54,11 +59,13 @@ If you prefer to deploy manually:
 If you're using a custom domain (e.g., `yourdomain.com`):
 
 1. Build with root base path:
+
    ```bash
    BASE_PATH='/' npm run build
    ```
 
 2. Deploy:
+
    ```bash
    npm run deploy:gh-pages
    ```
@@ -68,15 +75,18 @@ If you're using a custom domain (e.g., `yourdomain.com`):
 ## Troubleshooting
 
 ### App loads but shows blank page
+
 - Check that the `BASE_PATH` matches your repository name
 - Clear your browser cache
 - Check browser console for errors
 
 ### Images or assets not loading
+
 - Ensure the base path includes trailing slash: `/repo-name/`
 - Verify the `BASE_PATH` environment variable is set correctly
 
 ### Workflow fails
+
 - Check GitHub Actions tab for error messages
 - Ensure you've enabled GitHub Pages in repository settings
 - Verify the workflow file exists at `.github/workflows/deploy.yml`
@@ -94,5 +104,3 @@ npm run preview
 ```
 
 This helps catch issues before deploying to GitHub Pages.
-
-
