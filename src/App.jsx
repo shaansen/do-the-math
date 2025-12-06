@@ -45,7 +45,7 @@ function App() {
         baseColor: ['ac6651'],
         hairColor: ['000000']
       })
-      return avatar.toSvg()
+      return avatar.toString()
     } catch (error) {
       console.error('Error creating avatar 1:', error)
       return ''
@@ -60,7 +60,7 @@ function App() {
         hairColor: ['f4d140'],
         mouth: ['nervous']
       })
-      return avatar.toSvg()
+      return avatar.toString()
     } catch (error) {
       console.error('Error creating avatar 2:', error)
       return ''

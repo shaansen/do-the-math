@@ -18,8 +18,8 @@ function AvatarToggle({ assignment, person1Name, person2Name, onClick }) {
   })
 
   const getAvatars = () => {
-    const avatar1Svg = avatar1.toSvg()
-    const avatar2Svg = avatar2.toSvg()
+    const avatar1Svg = avatar1.toString()
+    const avatar2Svg = avatar2.toString()
     
     if (assignment === 'person1') {
       return (
