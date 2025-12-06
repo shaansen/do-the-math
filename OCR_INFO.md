@@ -1,20 +1,30 @@
 # OCR Configuration
 
-This app uses **Tesseract.js** for OCR (Optical Character Recognition) to extract prices from bill images.
+This app uses **Tesseract.js** as the primary OCR engine, with **OCR.space** as an automatic fallback for better accuracy.
 
 ## Current Setup
 
+### Primary: Tesseract.js
 - **Library**: Tesseract.js v5.0.4
-- **Mode**: Client-side processing (no external API calls)
+- **Mode**: Client-side processing (runs in browser)
 - **Optimization**: Configured for numbers only (`0123456789.$`)
 - **Engine**: LSTM Neural Network engine for better accuracy
+- **Privacy**: All processing happens locally in the browser
+
+### Fallback: OCR.space API
+- **Service**: Cloud-based OCR API
+- **Free Tier**: 25,000 requests/month (no API key required)
+- **Activation**: Automatically used when Tesseract finds no prices or fails
+- **Benefits**: Higher accuracy for difficult images
+- **Privacy Note**: Images are sent to OCR.space servers (deleted after processing)
 
 ## How It Works
 
 1. User uploads/takes a photo of the bill
-2. Image is processed client-side using Tesseract.js
-3. Only numbers and prices are extracted (filters out text)
-4. Detected prices are displayed in a list for assignment
+2. Image is enhanced automatically (contrast, brightness, upscaling)
+3. **Primary**: Tesseract.js processes the image client-side
+4. **Fallback**: If Tesseract finds no prices or fails, OCR.space API is used automatically
+5. Prices are extracted and displayed in a list for assignment
 
 ## Optimizations Applied
 
@@ -22,13 +32,16 @@ This app uses **Tesseract.js** for OCR (Optical Character Recognition) to extrac
 - **Page Segmentation**: Optimized for uniform text blocks
 - **LSTM Engine**: Uses neural network for better recognition
 - **Word-level Extraction**: Processes both full text and individual word boxes
+- **Automatic Image Enhancement**: Pre-processing improves OCR accuracy
+- **Dual OCR Strategy**: Tesseract for privacy, OCR.space for accuracy
 
 ## Benefits
 
-✅ **Privacy**: All processing happens in the browser  
-✅ **Free**: No API costs or limits  
-✅ **Fast**: Optimized for numbers only  
-✅ **Reliable**: Works offline once loaded  
+✅ **Privacy First**: Tesseract processes locally in browser  
+✅ **Better Accuracy**: OCR.space fallback for difficult images  
+✅ **Free**: No API costs (OCR.space free tier: 25k requests/month)  
+✅ **Reliable**: Works offline with Tesseract, online with OCR.space fallback  
+✅ **Automatic**: Seamless fallback - no user action needed  
 
 ## Tips for Best Results
 
@@ -36,14 +49,13 @@ This app uses **Tesseract.js** for OCR (Optical Character Recognition) to extrac
 - Ensure text is readable and not blurry
 - Hold camera steady while taking photos
 - Use high-resolution images when possible
+- The app automatically tries both OCR methods for best results
 
-## Future Improvements
+## API Key (Optional)
 
-If you need better accuracy in the future, consider:
-- Google Cloud Vision API (requires API key, more accurate)
-- Azure Computer Vision (requires API key)
-- Image preprocessing (contrast, brightness adjustments)
-
-For now, Tesseract.js provides a good balance of accuracy, privacy, and ease of use.
+If you want to use OCR.space with higher limits or want to track usage:
+1. Sign up at [ocr.space](https://ocr.space/ocrapi)
+2. Get your free API key
+3. Update `ocrService.js` and uncomment the `apikey` line in `extractPricesWithOCRSpace()`
 
 
