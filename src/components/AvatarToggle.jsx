@@ -11,14 +11,10 @@ function AvatarToggle({ assignment, person1Name, person2Name, onClick }) {
   })
 
   const avatar2 = createAvatar(micah, {
-    seed: person2Name,
-    baseColor: ['b6e3f4', 'c0aede', 'd1d4f9', 'ffd5dc', 'ffdfbf'],
-    skinColor: ['fdbcb4', 'f8d25c', '88c9f9', 'fc909f', 'ffd5dc'], // Lighter skin tones
-    hair: ['fonze', 'dougFunny', 'pixie', 'full', 'long'],
-    hairColor: ['f59797', 'd5b886', 'fc909f', 'ffd5dc', 'fffacd'], // Blonde/light hair colors
-    mouth: ['smile', 'sad', 'surprised'],
-    shirt: ['polo', 'hoodie', 'tee01', 'tee02', 'dressShirt'],
-    shirtColor: ['262e33', '65c9ff', '5199e4', '25557c', 'e6e6fa']
+    seed: 'Alexander',
+    baseColor: ['f9b9c6'],
+    hairColor: ['f4d140'],
+    mouth: ['nervous']
   })
 
   const getAvatars = () => {
