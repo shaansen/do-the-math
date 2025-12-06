@@ -44,7 +44,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
       const { prices, total } = await ocrService.extractPrices(processedImage)
       
       if (prices.length === 0) {
-        setOcrError('No prices detected. Try adding them manually or use a clearer image.')
+        setOcrError('No prices detected with OCR. Try adding them manually or use a clearer image.')
       }
       
       setDetectedPrices(prices)
