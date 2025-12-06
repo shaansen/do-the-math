@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import ImageUpload from './components/ImageUpload'
 import VisualBillSplitter from './components/VisualBillSplitter'
 import { createAvatar } from '@dicebear/core'
@@ -37,36 +37,54 @@ function App() {
     setTotal(0)
   }
 
-  // Create avatars for header
-  const headerAvatar1 = createAvatar(micah, {
-    seed: 'Destiny',
-    baseColor: ['ac6651'],
-    hairColor: ['000000']
-  })
+  // Create avatars for header (memoized to avoid recreating on every render)
+  const headerAvatar1Svg = useMemo(() => {
+    try {
+      const avatar = createAvatar(micah, {
+        seed: 'Destiny',
+        baseColor: ['ac6651'],
+        hairColor: ['000000']
+      })
+      return avatar.toSvg()
+    } catch (error) {
+      console.error('Error creating avatar 1:', error)
+      return ''
+    }
+  }, [])
 
-  const headerAvatar2 = createAvatar(micah, {
-    seed: 'Alexander',
-    baseColor: ['f9b9c6'],
-    hairColor: ['f4d140'],
-    mouth: ['nervous']
-  })
+  const headerAvatar2Svg = useMemo(() => {
+    try {
+      const avatar = createAvatar(micah, {
+        seed: 'Alexander',
+        baseColor: ['f9b9c6'],
+        hairColor: ['f4d140'],
+        mouth: ['nervous']
+      })
+      return avatar.toSvg()
+    } catch (error) {
+      console.error('Error creating avatar 2:', error)
+      return ''
+    }
+  }, [])
 
   return (
     <div className="app">
       <header className="app-header">
         <h1 className="app-title">
-          <div className="header-avatars">
-            <div 
-              className="header-avatar"
-              dangerouslySetInnerHTML={{ __html: headerAvatar1.toSvg() }}
-              title={person1Name}
-            />
-            <div 
-              className="header-avatar"
-              dangerouslySetInnerHTML={{ __html: headerAvatar2.toSvg() }}
-              title={person2Name}
-            />
-          </div>
+          {headerAvatar1Svg && headerAvatar2Svg && (
+            <div className="header-avatars">
+              <div 
+                className="header-avatar"
+                dangerouslySetInnerHTML={{ __html: headerAvatar1Svg }}
+                title={person1Name}
+              />
+              <div 
+                className="header-avatar"
+                dangerouslySetInnerHTML={{ __html: headerAvatar2Svg }}
+                title={person2Name}
+              />
+            </div>
+          )}
           Bill Splitter
         </h1>
         <p>Split your bills easily with your partner</p>
