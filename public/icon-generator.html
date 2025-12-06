@@ -33,17 +33,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
       padding: 20px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.2);
     }
     .avatar {
-      width: 80px;
-      height: 80px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       overflow: hidden;
       background: white;
-      border: 3px solid rgba(255,255,255,0.3);
+      border: 4px solid rgba(255,255,255,0.3);
     }
     .avatar svg {
       width: 100%;
@@ -72,17 +71,15 @@
     <h1>Icon Generator for "Do the math"</h1>
     <p><strong>Instructions:</strong></p>
     <ol>
-      <li>Wait for the avatars to load below</li>
-      <li>Take a screenshot of the icon container (180x180px)</li>
-      <li>Crop to exactly 180x180 pixels</li>
-      <li>Save as PNG files: <code>icon-192.png</code> and <code>icon-512.png</code></li>
-      <li>Place them in the <code>public</code> folder</li>
+      <li>Wait for Charlie's avatar to load below</li>
+      <li>Click "Download Icon as PNG" to generate all icon files</li>
+      <li>Save the downloaded files to the <code>public</code> folder</li>
+      <li>Commit and push the icon files</li>
     </ol>
-    <p><em>Alternatively, right-click the icon and "Save image as" if your browser supports it.</em></p>
+    <p><em>After deployment, when you "Add to Home Screen" on iPhone, you'll see Charlie's avatar as the icon!</em></p>
   </div>
 
   <div class="icon-container" id="iconContainer">
-    <div class="avatar" id="avatar1"></div>
     <div class="avatar" id="avatar2"></div>
   </div>
 
@@ -93,12 +90,6 @@
     import { createAvatar } from 'https://cdn.jsdelivr.net/npm/@dicebear/core@6.1.3/+esm'
     import { micah } from 'https://cdn.jsdelivr.net/npm/@dicebear/collection@6.1.3/+esm'
 
-    const avatar1 = createAvatar(micah, {
-      seed: 'Destiny',
-      baseColor: ['ac6651'],
-      hairColor: ['000000']
-    })
-
     const avatar2 = createAvatar(micah, {
       seed: 'Alexander',
       baseColor: ['f9b9c6'],
@@ -106,7 +97,6 @@
       mouth: ['nervous']
     })
 
-    document.getElementById('avatar1').innerHTML = avatar1.toString()
     document.getElementById('avatar2').innerHTML = avatar2.toString()
 
     // Make download function available globally
