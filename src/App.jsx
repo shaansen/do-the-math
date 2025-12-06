@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import ImageUpload from './components/ImageUpload'
 import VisualBillSplitter from './components/VisualBillSplitter'
+import { createAvatar } from '@dicebear/core'
+import { micah } from '@dicebear/collection'
 import './App.css'
 
 function App() {
@@ -35,10 +37,38 @@ function App() {
     setTotal(0)
   }
 
+  // Create avatars for header
+  const headerAvatar1 = createAvatar(micah, {
+    seed: 'Destiny',
+    baseColor: ['ac6651'],
+    hairColor: ['000000']
+  })
+
+  const headerAvatar2 = createAvatar(micah, {
+    seed: 'Alexander',
+    baseColor: ['f9b9c6'],
+    hairColor: ['f4d140'],
+    mouth: ['nervous']
+  })
+
   return (
     <div className="app">
       <header className="app-header">
-        <h1>💳 Bill Splitter</h1>
+        <h1 className="app-title">
+          <div className="header-avatars">
+            <div 
+              className="header-avatar"
+              dangerouslySetInnerHTML={{ __html: headerAvatar1.toSvg() }}
+              title={person1Name}
+            />
+            <div 
+              className="header-avatar"
+              dangerouslySetInnerHTML={{ __html: headerAvatar2.toSvg() }}
+              title={person2Name}
+            />
+          </div>
+          Bill Splitter
+        </h1>
         <p>Split your bills easily with your partner</p>
       </header>
 
