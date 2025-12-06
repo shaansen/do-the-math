@@ -1,4 +1,4 @@
-# Bill Splitter App 💳
+# Do the math
 
 A modern web app to split bills and receipts with your partner. Take a photo of your bill, assign items to each person, and automatically calculate the split including taxes.
 

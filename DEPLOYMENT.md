@@ -1,6 +1,6 @@
 # Deployment Guide for GitHub Pages
 
-This guide will help you deploy the Bill Splitter app to GitHub Pages.
+This guide will help you deploy the Do the math app to GitHub Pages.
 
 ## Quick Start (Automatic Deployment)
 

@@ -1,6 +1,6 @@
 # Quick Start Guide 🚀
 
-Get your Bill Splitter app up and running on GitHub Pages in 5 minutes!
+Get your Do the math app up and running on GitHub Pages in 5 minutes!
 
 ## Step 1: Create a GitHub Repository
 
@@ -20,7 +20,7 @@ git init
 git add .
 
 # Commit
-git commit -m "Initial commit: Bill Splitter app"
+git commit -m "Initial commit: Do the math app"
 
 # Add your GitHub repository as remote
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
