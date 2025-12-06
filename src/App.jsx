@@ -85,9 +85,9 @@ function App() {
               />
             </div>
           )}
-          Bill Splitter
+          Do the math
         </h1>
-        <p>Split your bills easily with your partner</p>
+        <p>Help Charlie and me split bills</p>
       </header>
 
       <main className="app-main">
