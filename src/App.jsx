@@ -87,7 +87,7 @@ function App() {
           )}
           Do the math
         </h1>
-        <p>Help Charlie and me split bills</p>
+        <p>Help Charlie and Shantanu split bills</p>
       </header>
 
       <main className="app-main">

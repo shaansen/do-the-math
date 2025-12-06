@@ -1,7 +1,7 @@
 {
   "name": "Do the math",
   "short_name": "Do the math",
-  "description": "Help Charlie and me split bills",
+  "description": "Help Charlie and Shantanu split bills",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#667eea",
