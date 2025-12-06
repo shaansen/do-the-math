@@ -40,3 +40,4 @@ function ItemAssignment({ items, onItemAssignment, person1Name, person2Name }) {
 
 export default ItemAssignment
 
+

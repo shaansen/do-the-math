@@ -46,3 +46,4 @@ If you need better accuracy in the future, consider:
 
 For now, Tesseract.js provides a good balance of accuracy, privacy, and ease of use.
 
+

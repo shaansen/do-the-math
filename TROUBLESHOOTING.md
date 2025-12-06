@@ -152,3 +152,4 @@ Check the browser console (F12 → Console tab) for specific error messages. Com
 - `Failed to load resource: 404` - Base path issue
 - `CORS error` - Usually not an issue with GitHub Pages
 - JavaScript errors - Check the error details
+
