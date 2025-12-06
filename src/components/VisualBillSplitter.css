@@ -531,3 +531,130 @@
   user-select: none;
   -webkit-touch-callout: none;
 }
+
+/* Who Paid Section */
+.who-paid-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.who-paid-label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.who-paid-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.who-paid-button {
+  flex: 1;
+  max-width: 200px;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  touch-action: manipulation;
+}
+
+.who-paid-button:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.who-paid-button.active {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.who-paid-button span {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.who-paid-button.active span {
+  color: #667eea;
+}
+
+.who-paid-button .avatar-toggle {
+  pointer-events: none;
+}
+
+/* Payment Summary */
+.payment-summary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.payment-summary-title {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.payment-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.payment-amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.payment-text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+.payment-message.balanced .payment-text {
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .who-paid-buttons {
+    flex-direction: column;
+  }
+  
+  .who-paid-button {
+    max-width: 100%;
+  }
+  
+  .payment-amount {
+    font-size: 2rem;
+  }
+  
+  .payment-text {
+    font-size: 1rem;
+  }
+}

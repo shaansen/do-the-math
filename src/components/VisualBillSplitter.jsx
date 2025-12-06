@@ -13,6 +13,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
   const [manualPriceInput, setManualPriceInput] = useState('')
   const [showManualEntry, setShowManualEntry] = useState(false)
   const [ocrError, setOcrError] = useState(null)
+  const [whoPaid, setWhoPaid] = useState(null) // null, 'person1', or 'person2'
   const imageRef = useRef(null)
 
   useEffect(() => {
@@ -206,6 +207,37 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         ) : (
           <p>Upload a bill image to automatically detect prices, or add them manually below.</p>
         )}
+      </div>
+
+      {/* Who Paid Selector */}
+      <div className="who-paid-section">
+        <label className="who-paid-label">Who paid for this bill?</label>
+        <div className="who-paid-buttons">
+          <button
+            className={`who-paid-button ${whoPaid === 'person1' ? 'active' : ''}`}
+            onClick={() => setWhoPaid(whoPaid === 'person1' ? null : 'person1')}
+          >
+            <AvatarToggle
+              assignment="person1"
+              person1Name={person1Name}
+              person2Name={person2Name}
+              onClick={() => {}}
+            />
+            <span>{person1Name}</span>
+          </button>
+          <button
+            className={`who-paid-button ${whoPaid === 'person2' ? 'active' : ''}`}
+            onClick={() => setWhoPaid(whoPaid === 'person2' ? null : 'person2')}
+          >
+            <AvatarToggle
+              assignment="person2"
+              person1Name={person1Name}
+              person2Name={person2Name}
+              onClick={() => {}}
+            />
+            <span>{person2Name}</span>
+          </button>
+        </div>
       </div>
 
       {isProcessing && (
@@ -435,6 +467,36 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
             <span>Grand Total:</span>
             <span>${(totals.person1Final + totals.person2Final).toFixed(2)}</span>
           </div>
+        </div>
+      )}
+
+      {/* Payment Summary - Who owes whom */}
+      {whoPaid && totals.person1Final + totals.person2Final > 0 && (
+        <div className="payment-summary">
+          <h3 className="payment-summary-title">💳 Payment Summary</h3>
+          {whoPaid === 'person1' ? (
+            totals.person2Final > 0 ? (
+              <div className="payment-message">
+                <span className="payment-amount">${totals.person2Final.toFixed(2)}</span>
+                <span className="payment-text">{person2Name} owes {person1Name}</span>
+              </div>
+            ) : (
+              <div className="payment-message balanced">
+                <span className="payment-text">✓ All settled! {person1Name} paid and no one owes anything.</span>
+              </div>
+            )
+          ) : (
+            totals.person1Final > 0 ? (
+              <div className="payment-message">
+                <span className="payment-amount">${totals.person1Final.toFixed(2)}</span>
+                <span className="payment-text">{person1Name} owes {person2Name}</span>
+              </div>
+            ) : (
+              <div className="payment-message balanced">
+                <span className="payment-text">✓ All settled! {person2Name} paid and no one owes anything.</span>
+              </div>
+            )
+          )}
         </div>
       )}
 
