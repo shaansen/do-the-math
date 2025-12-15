@@ -204,8 +204,10 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
           <p>Click prices to toggle: <strong>Both</strong> → <strong>{person1Name}</strong> → <strong>{person2Name}</strong> → <strong>Both</strong></p>
         ) : ocrError ? (
           <p className="error-text">{ocrError}</p>
-        ) : (
+        ) : billImage ? (
           <p>Upload a bill image to automatically detect prices, or add them manually below.</p>
+        ) : (
+          <p>Add items manually using the form below. Click avatars to assign items to {person1Name}, {person2Name}, or both.</p>
         )}
       </div>
 

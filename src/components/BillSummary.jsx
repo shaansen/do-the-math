@@ -119,3 +119,4 @@ function BillSummary({ items, subtotal, tax, total, person1Name, person2Name }) 
 export default BillSummary
 
 
+

@@ -7,6 +7,7 @@ import './App.css'
 
 function App() {
   const [billImage, setBillImage] = useState(null)
+  const [entryMode, setEntryMode] = useState(null) // null, 'image', or 'manual'
   const [billItems, setBillItems] = useState([])
   const [subtotal, setSubtotal] = useState(0)
   const [tax, setTax] = useState(0)
@@ -16,6 +17,16 @@ function App() {
 
   const handleImageSelect = (image) => {
     setBillImage(image)
+    setEntryMode('image')
+    setBillItems([])
+    setSubtotal(0)
+    setTax(0)
+    setTotal(0)
+  }
+
+  const handleManualEntry = () => {
+    setBillImage(null)
+    setEntryMode('manual')
     setBillItems([])
     setSubtotal(0)
     setTax(0)
@@ -31,6 +42,7 @@ function App() {
 
   const resetBill = () => {
     setBillImage(null)
+    setEntryMode(null)
     setBillItems([])
     setSubtotal(0)
     setTax(0)
@@ -91,7 +103,34 @@ function App() {
       </header>
 
       <main className="app-main">
-        {!billImage ? (
+        {!entryMode ? (
+          <div className="entry-mode-selector">
+            <div className="mode-selection-card">
+              <h2>How would you like to split your bill?</h2>
+              <div className="mode-buttons">
+                <button 
+                  className="mode-button image-mode-button"
+                  onClick={() => {
+                    // This will show ImageUpload component
+                    setEntryMode('image')
+                  }}
+                >
+                  <div className="mode-icon">📸</div>
+                  <div className="mode-title">Upload Image</div>
+                  <div className="mode-description">Take a photo or upload a bill image</div>
+                </button>
+                <button 
+                  className="mode-button manual-mode-button"
+                  onClick={handleManualEntry}
+                >
+                  <div className="mode-icon">✏️</div>
+                  <div className="mode-title">Enter Manually</div>
+                  <div className="mode-description">Add all items manually</div>
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : entryMode === 'image' && !billImage ? (
           <ImageUpload
             onImageSelect={handleImageSelect}
             skipAutoProcess={true}
