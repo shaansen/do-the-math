@@ -10,6 +10,8 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
   const [totalAmount, setTotalAmount] = useState(0)
   const [manualTax, setManualTax] = useState('')
   const [tipPercentage, setTipPercentage] = useState('')
+  const [manualTip, setManualTip] = useState('')
+  const [tipMode, setTipMode] = useState('percentage') // 'percentage' or 'manual'
   const [manualPriceInput, setManualPriceInput] = useState('')
   const [showManualEntry, setShowManualEntry] = useState(false)
   const [ocrError, setOcrError] = useState(null)
@@ -24,7 +26,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
 
   useEffect(() => {
     updateTotals()
-  }, [manualTax, tipPercentage])
+  }, [manualTax, tipPercentage, manualTip, tipMode])
 
   const extractAllPrices = async () => {
     if (!billImage) return
@@ -120,16 +122,25 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
     const person2WithTax = person2PreTax + person2Tax
     
     // Calculate tip
-    const tipPercent = parseFloat(tipPercentage) || 0
     let person1Tip = 0
     let person2Tip = 0
     let totalTip = 0
+    const tipPercent = parseFloat(tipPercentage) || 0
+    const tipAmount = parseFloat(manualTip) || 0
     
-    if (tipPercent > 0) {
+    if (tipMode === 'percentage' && tipPercent > 0) {
       const baseForTip = person1WithTax + person2WithTax
       totalTip = baseForTip * (tipPercent / 100)
       
       if (totalTip > 0 && baseForTip > 0) {
+        person1Tip = (person1WithTax / baseForTip) * totalTip
+        person2Tip = (person2WithTax / baseForTip) * totalTip
+      }
+    } else if (tipMode === 'manual' && tipAmount > 0) {
+      totalTip = tipAmount
+      const baseForTip = person1WithTax + person2WithTax
+      
+      if (baseForTip > 0) {
         person1Tip = (person1WithTax / baseForTip) * totalTip
         person2Tip = (person2WithTax / baseForTip) * totalTip
       }
@@ -369,40 +380,83 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
       {/* Tip Calculator */}
       <div className="tip-section">
         <label className="input-label">
-          <span>Tip Percentage (%)</span>
-          <div className="tip-input-group">
-            <input
-              type="number"
-              inputMode="decimal"
-              step="0.1"
-              min="0"
-              max="100"
-              placeholder="18"
-              value={tipPercentage}
-              onChange={(e) => setTipPercentage(e.target.value)}
-              className="tip-input"
-            />
-            <div className="quick-tip-buttons">
+          <div className="tip-mode-selector">
+            <span>Tip</span>
+            <div className="tip-mode-buttons">
               <button
-                onClick={() => setTipPercentage('15')}
-                className="quick-tip-btn"
+                type="button"
+                className={`tip-mode-btn ${tipMode === 'percentage' ? 'active' : ''}`}
+                onClick={() => {
+                  setTipMode('percentage')
+                  setManualTip('')
+                }}
               >
-                15%
+                Percentage
               </button>
               <button
-                onClick={() => setTipPercentage('18')}
-                className="quick-tip-btn"
+                type="button"
+                className={`tip-mode-btn ${tipMode === 'manual' ? 'active' : ''}`}
+                onClick={() => {
+                  setTipMode('manual')
+                  setTipPercentage('')
+                }}
               >
-                18%
-              </button>
-              <button
-                onClick={() => setTipPercentage('20')}
-                className="quick-tip-btn"
-              >
-                20%
+                Manual Amount
               </button>
             </div>
           </div>
+          
+          {tipMode === 'percentage' ? (
+            <div className="tip-input-group">
+              <input
+                type="number"
+                inputMode="decimal"
+                step="0.1"
+                min="0"
+                max="100"
+                placeholder="18"
+                value={tipPercentage}
+                onChange={(e) => setTipPercentage(e.target.value)}
+                className="tip-input"
+              />
+              <div className="quick-tip-buttons">
+                <button
+                  type="button"
+                  onClick={() => setTipPercentage('15')}
+                  className="quick-tip-btn"
+                >
+                  15%
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTipPercentage('18')}
+                  className="quick-tip-btn"
+                >
+                  18%
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTipPercentage('20')}
+                  className="quick-tip-btn"
+                >
+                  20%
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="tip-input-group">
+              <input
+                type="number"
+                inputMode="decimal"
+                step="0.01"
+                min="0"
+                placeholder="0.00"
+                value={manualTip}
+                onChange={(e) => setManualTip(e.target.value)}
+                className="tip-input"
+              />
+            </div>
+          )}
         </label>
         {totals.totalTip > 0 && (
           <div className="tip-preview">
@@ -412,7 +466,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
       </div>
 
       {/* Summary Cards */}
-      {(detectedPrices.length > 0 || manualTax || tipPercentage) && (
+      {(detectedPrices.length > 0 || manualTax || tipPercentage || manualTip) && (
         <div className="price-summary">
           <div className="summary-card person1-summary">
             <h4>{person1Name}</h4>
@@ -506,7 +560,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
         </div>
       )}
 
-      {(detectedPrices.length > 0 || manualTax || tipPercentage) && (
+      {(detectedPrices.length > 0 || manualTax || tipPercentage || manualTip) && (
         <div className="action-buttons-row">
           <button
             onClick={onReset}

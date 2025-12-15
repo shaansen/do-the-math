@@ -389,6 +389,43 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.tip-mode-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+
+.tip-mode-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tip-mode-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  color: #666;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tip-mode-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.tip-mode-btn.active {
+  border-color: #667eea;
+  background: #667eea;
+  color: white;
+}
+
 .input-label {
   display: flex;
   flex-direction: column;
@@ -426,6 +463,10 @@
 .tip-input {
   flex: 1;
   max-width: 150px;
+}
+
+.tip-input-group:has(input[value]:not([value=""])) .tip-input {
+  max-width: none;
 }
 
 .quick-tip-buttons {
