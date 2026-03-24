@@ -13,15 +13,8 @@ body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   color: #333;
-  /* Prevent text selection on mobile for better UX */
   -webkit-tap-highlight-color: transparent;
-  /* Improve touch scrolling */
   -webkit-overflow-scrolling: touch;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 #root {
@@ -30,17 +23,13 @@ code {
   flex-direction: column;
 }
 
-/* Mobile-specific improvements */
 @media (max-width: 768px) {
   body {
-    /* Prevent zoom on input focus on iOS */
     font-size: 16px;
   }
-  
-  /* Better touch targets (min 44x44px for accessibility) */
+
   button, a, input, select {
     min-height: 44px;
     min-width: 44px;
   }
 }
-

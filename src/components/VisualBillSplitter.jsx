@@ -1,57 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import AvatarToggle from './AvatarToggle'
 import './VisualBillSplitter.css'
 
 function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset }) {
-  const [detectedPrices, setDetectedPrices] = useState([]) // {price, assignment, id}
-  const [totalAmount, setTotalAmount] = useState(0)
+  const [detectedPrices, setDetectedPrices] = useState([])
   const [manualTax, setManualTax] = useState('')
   const [tipPercentage, setTipPercentage] = useState('')
   const [manualTip, setManualTip] = useState('')
-  const [tipMode, setTipMode] = useState('percentage') // 'percentage' or 'manual'
+  const [tipMode, setTipMode] = useState('percentage')
   const [manualPriceInput, setManualPriceInput] = useState('')
-  const [whoPaid, setWhoPaid] = useState(null) // null, 'person1', or 'person2'
+  const [whoPaid, setWhoPaid] = useState(null)
+  const [editingId, setEditingId] = useState(null)
+  const [editValue, setEditValue] = useState('')
 
-  useEffect(() => {
-    updateTotals()
-  }, [manualTax, tipPercentage, manualTip, tipMode])
-
-  const addManualPrice = () => {
-    const price = parseFloat(manualPriceInput)
-    if (price && price > 0) {
-      const newPrice = {
-        id: `${Date.now()}_${Math.random()}`,
-        price: price,
-        assignment: 'both'
-      }
-      setDetectedPrices([...detectedPrices, newPrice])
-      setManualPriceInput('')
-      updateTotals([...detectedPrices, newPrice])
-    }
-  }
-
-  const toggleAssignment = (priceId) => {
-    const updated = detectedPrices.map(item => {
-      if (item.id === priceId) {
-        if (item.assignment === 'both') {
-          return { ...item, assignment: 'person1' }
-        } else if (item.assignment === 'person1') {
-          return { ...item, assignment: 'person2' }
-        } else {
-          return { ...item, assignment: 'both' }
-        }
-      }
-      return item
-    })
-
-    setDetectedPrices(updated)
-    updateTotals(updated)
-  }
-
-  const calculateTotals = (prices = detectedPrices) => {
-    const person1Items = prices.filter(p => p.assignment === 'person1')
-    const person2Items = prices.filter(p => p.assignment === 'person2')
-    const sharedItems = prices.filter(p => p.assignment === 'both')
+  const totals = useMemo(() => {
+    const person1Items = detectedPrices.filter(p => p.assignment === 'person1')
+    const person2Items = detectedPrices.filter(p => p.assignment === 'person2')
+    const sharedItems = detectedPrices.filter(p => p.assignment === 'both')
 
     const person1Subtotal = person1Items.reduce((sum, p) => sum + p.price, 0)
     const person2Subtotal = person2Items.reduce((sum, p) => sum + p.price, 0)
@@ -63,7 +28,6 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
     const person1PreTax = person1Subtotal + sharedHalf
     const person2PreTax = person2Subtotal + sharedHalf
 
-    // Calculate tax
     const taxAmount = parseFloat(manualTax) || 0
     let person1Tax = 0
     let person2Tax = 0
@@ -77,7 +41,6 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
     const person1WithTax = person1PreTax + person1Tax
     const person2WithTax = person2PreTax + person2Tax
 
-    // Calculate tip
     let person1Tip = 0
     let person2Tip = 0
     let totalTip = 0
@@ -121,12 +84,10 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
       person1Final: person1WithTax + person1Tip,
       person2Final: person2WithTax + person2Tip
     }
-  }
+  }, [detectedPrices, manualTax, tipPercentage, manualTip, tipMode])
 
-  const updateTotals = (prices = detectedPrices) => {
-    const totals = calculateTotals(prices)
-
-    const items = prices.map(p => ({
+  useEffect(() => {
+    const items = detectedPrices.map(p => ({
       name: `$${p.price.toFixed(2)}`,
       price: p.price,
       assignment: p.assignment
@@ -139,12 +100,54 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
       totals.person1Final + totals.person2Final,
       totals.totalTip
     )
+  }, [totals, detectedPrices, onItemsReady])
+
+  const addManualPrice = () => {
+    const price = parseFloat(manualPriceInput)
+    if (price && price > 0) {
+      const newPrices = [...detectedPrices, {
+        id: `${Date.now()}_${Math.random()}`,
+        price,
+        assignment: 'both'
+      }]
+      setDetectedPrices(newPrices)
+      setManualPriceInput('')
+    }
+  }
+
+  const toggleAssignment = (priceId) => {
+    setDetectedPrices(prev => prev.map(item => {
+      if (item.id !== priceId) return item
+      const next = item.assignment === 'both' ? 'person1'
+        : item.assignment === 'person1' ? 'person2'
+        : 'both'
+      return { ...item, assignment: next }
+    }))
   }
 
   const removePrice = (priceId) => {
-    const updated = detectedPrices.filter(p => p.id !== priceId)
-    setDetectedPrices(updated)
-    updateTotals(updated)
+    setDetectedPrices(prev => prev.filter(p => p.id !== priceId))
+  }
+
+  const startEditing = (item) => {
+    setEditingId(item.id)
+    setEditValue(item.price.toString())
+  }
+
+  const commitEdit = () => {
+    const newPrice = parseFloat(editValue)
+    if (newPrice && newPrice > 0) {
+      setDetectedPrices(prev => prev.map(item =>
+        item.id === editingId ? { ...item, price: newPrice } : item
+      ))
+    }
+    setEditingId(null)
+    setEditValue('')
+  }
+
+  const cancelEdit = () => {
+    setEditingId(null)
+    setEditValue('')
   }
 
   const getAssignmentColor = (assignment) => {
@@ -153,26 +156,100 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
     return '#ff9800'
   }
 
-  const getAssignmentLabel = (assignment) => {
-    if (assignment === 'person1') return person1Name
-    if (assignment === 'person2') return person2Name
-    return 'Both'
-  }
-
-  const totals = calculateTotals()
+  const grandTotal = totals.person1Final + totals.person2Final
+  const hasData = detectedPrices.length > 0 || manualTax || tipPercentage || manualTip
 
   return (
     <div className="visual-splitter-container">
-      <div className="instructions">
-        <h3>💰 Bill Items</h3>
-        {detectedPrices.length > 0 ? (
-          <p>Click prices to toggle: <strong>Both</strong> → <strong>{person1Name}</strong> → <strong>{person2Name}</strong> → <strong>Both</strong></p>
-        ) : (
-          <p>Add items manually using the form below. Click avatars to assign items to {person1Name}, {person2Name}, or both.</p>
-        )}
+      <div className="manual-entry-section">
+        <h3 className="manual-entry-title">Add Items</h3>
+        <div className="manual-entry-form">
+          <input
+            type="number"
+            inputMode="decimal"
+            step="0.01"
+            min="0"
+            placeholder="Enter price (e.g., 12.99)"
+            value={manualPriceInput}
+            onChange={(e) => setManualPriceInput(e.target.value)}
+            className="manual-price-input"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') addManualPrice()
+            }}
+          />
+          <button
+            onClick={addManualPrice}
+            disabled={!manualPriceInput || parseFloat(manualPriceInput) <= 0}
+            className="add-manual-button"
+          >
+            Add Item
+          </button>
+        </div>
+        <p className="manual-entry-hint">
+          Enter each item price and press Enter or click Add Item
+        </p>
       </div>
 
-      {/* Who Paid Selector */}
+      {detectedPrices.length > 0 && (
+        <div className="prices-list">
+          <div className="prices-list-header">
+            <h3>All Items ({detectedPrices.length})</h3>
+            <p className="prices-hint">Tap avatars to assign. Tap price to edit.</p>
+          </div>
+          <div className="prices-grid">
+            {detectedPrices.map((item) => (
+              <div
+                key={item.id}
+                className="price-item"
+                style={{ borderLeftColor: getAssignmentColor(item.assignment) }}
+              >
+                <div className="price-row">
+                  <AvatarToggle
+                    assignment={item.assignment}
+                    person1Name={person1Name}
+                    person2Name={person2Name}
+                    onClick={() => toggleAssignment(item.id)}
+                  />
+                  <div className="price-header">
+                    {editingId === item.id ? (
+                      <input
+                        type="number"
+                        inputMode="decimal"
+                        step="0.01"
+                        min="0"
+                        className="price-edit-input"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') commitEdit()
+                          if (e.key === 'Escape') cancelEdit()
+                        }}
+                        onBlur={commitEdit}
+                        autoFocus
+                      />
+                    ) : (
+                      <div
+                        className="price-value-large"
+                        onClick={() => startEditing(item)}
+                      >
+                        ${item.price.toFixed(2)}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <button
+                  className="remove-price-button"
+                  onClick={() => removePrice(item.id)}
+                  title="Remove"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="who-paid-section">
         <label className="who-paid-label">Who paid for this bill?</label>
         <div className="who-paid-buttons">
@@ -203,79 +280,9 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
         </div>
       </div>
 
-      {/* Prices List */}
-      {detectedPrices.length > 0 && (
-        <div className="prices-list">
-          <h3>All Items ({detectedPrices.length})</h3>
-          <div className="prices-grid">
-            {detectedPrices.map((item) => (
-              <div
-                key={item.id}
-                className="price-item"
-                style={{ borderLeftColor: getAssignmentColor(item.assignment) }}
-              >
-                <div className="price-row">
-                  <AvatarToggle
-                    assignment={item.assignment}
-                    person1Name={person1Name}
-                    person2Name={person2Name}
-                    onClick={() => toggleAssignment(item.id)}
-                  />
-                  <div className="price-header">
-                    <div className="price-value-large">
-                      ${item.price.toFixed(2)}
-                    </div>
-                  </div>
-                </div>
-                <button
-                  className="remove-price-button"
-                  onClick={() => removePrice(item.id)}
-                  title="Remove"
-                >
-                  ✕
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Manual Entry Section */}
-      <div className="manual-entry-section">
-        <h3 className="manual-entry-title">Add Items Manually</h3>
-        <div className="manual-entry-form">
-          <input
-            type="number"
-            inputMode="decimal"
-            step="0.01"
-            min="0"
-            placeholder="Enter price (e.g., 12.99)"
-            value={manualPriceInput}
-            onChange={(e) => setManualPriceInput(e.target.value)}
-            className="manual-price-input"
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                addManualPrice()
-              }
-            }}
-          />
-          <button
-            onClick={addManualPrice}
-            disabled={!manualPriceInput || parseFloat(manualPriceInput) <= 0}
-            className="add-manual-button"
-          >
-            Add Item
-          </button>
-        </div>
-        <p className="manual-entry-hint">
-          Enter each item price and click "Add Item" to add it to your bill
-        </p>
-      </div>
-
-      {/* Tax Input */}
       <div className="manual-input-section">
         <label className="input-label">
-          <span>Tax Amount ($) - Enter manually</span>
+          <span>Tax Amount ($)</span>
           <input
             type="number"
             inputMode="decimal"
@@ -290,7 +297,6 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
         <p className="input-hint">Tax will be split proportionally based on each person's share</p>
       </div>
 
-      {/* Tip Calculator */}
       <div className="tip-section">
         <label className="input-label">
           <div className="tip-mode-selector">
@@ -333,27 +339,9 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
                 className="tip-input"
               />
               <div className="quick-tip-buttons">
-                <button
-                  type="button"
-                  onClick={() => setTipPercentage('15')}
-                  className="quick-tip-btn"
-                >
-                  15%
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTipPercentage('18')}
-                  className="quick-tip-btn"
-                >
-                  18%
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTipPercentage('20')}
-                  className="quick-tip-btn"
-                >
-                  20%
-                </button>
+                <button type="button" onClick={() => setTipPercentage('15')} className="quick-tip-btn">15%</button>
+                <button type="button" onClick={() => setTipPercentage('18')} className="quick-tip-btn">18%</button>
+                <button type="button" onClick={() => setTipPercentage('20')} className="quick-tip-btn">20%</button>
               </div>
             </div>
           ) : (
@@ -378,8 +366,7 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
         )}
       </div>
 
-      {/* Summary Cards */}
-      {(detectedPrices.length > 0 || manualTax || tipPercentage || manualTip) && (
+      {hasData && (
         <div className="price-summary">
           <div className="summary-card person1-summary">
             <h4>{person1Name}</h4>
@@ -433,20 +420,18 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
         </div>
       )}
 
-      {/* Grand Total */}
-      {totals.person1Final + totals.person2Final > 0 && (
+      {grandTotal > 0 && (
         <div className="total-display">
           <div className="total-line">
             <span>Grand Total:</span>
-            <span>${(totals.person1Final + totals.person2Final).toFixed(2)}</span>
+            <span>${grandTotal.toFixed(2)}</span>
           </div>
         </div>
       )}
 
-      {/* Payment Summary - Who owes whom */}
-      {whoPaid && totals.person1Final + totals.person2Final > 0 && (
+      {whoPaid && grandTotal > 0 && (
         <div className="payment-summary">
-          <h3 className="payment-summary-title">💳 Payment Summary</h3>
+          <h3 className="payment-summary-title">Payment Summary</h3>
           {whoPaid === 'person1' ? (
             totals.person2Final > 0 ? (
               <div className="payment-message">
@@ -455,7 +440,7 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
               </div>
             ) : (
               <div className="payment-message balanced">
-                <span className="payment-text">✓ All settled! {person1Name} paid and no one owes anything.</span>
+                <span className="payment-text">All settled! {person1Name} paid and no one owes anything.</span>
               </div>
             )
           ) : (
@@ -466,21 +451,35 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
               </div>
             ) : (
               <div className="payment-message balanced">
-                <span className="payment-text">✓ All settled! {person2Name} paid and no one owes anything.</span>
+                <span className="payment-text">All settled! {person2Name} paid and no one owes anything.</span>
               </div>
             )
           )}
         </div>
       )}
 
-      {(detectedPrices.length > 0 || manualTax || tipPercentage || manualTip) && (
+      {hasData && (
         <div className="action-buttons-row">
-          <button
-            onClick={onReset}
-            className="action-button reset-button"
-          >
-            🔄 Reset - Add New Bill
+          <button onClick={onReset} className="action-button reset-button">
+            Reset - New Bill
           </button>
+        </div>
+      )}
+
+      {grandTotal > 0 && (
+        <div className="sticky-summary">
+          <div className="sticky-person">
+            <span className="sticky-name">{person1Name}</span>
+            <span className="sticky-amount person1-color">${totals.person1Final.toFixed(2)}</span>
+          </div>
+          <div className="sticky-total">
+            <span className="sticky-total-label">Total</span>
+            <span className="sticky-total-amount">${grandTotal.toFixed(2)}</span>
+          </div>
+          <div className="sticky-person">
+            <span className="sticky-name">{person2Name}</span>
+            <span className="sticky-amount person2-color">${totals.person2Final.toFixed(2)}</span>
+          </div>
         </div>
       )}
     </div>

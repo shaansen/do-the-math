@@ -14,7 +14,4 @@ if (rootElement) {
       </ErrorBoundary>
     </React.StrictMode>,
   )
-} else {
-  console.error('Root element not found!')
 }
-

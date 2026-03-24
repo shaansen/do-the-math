@@ -26,32 +26,27 @@ function App() {
     setTotal(0)
   }
 
-  // Create avatars for header (memoized to avoid recreating on every render)
   const headerAvatar1Svg = useMemo(() => {
     try {
-      const avatar = createAvatar(micah, {
+      return createAvatar(micah, {
         seed: 'Destiny',
         baseColor: ['ac6651'],
         hairColor: ['000000']
-      })
-      return avatar.toString()
-    } catch (error) {
-      console.error('Error creating avatar 1:', error)
+      }).toString()
+    } catch {
       return ''
     }
   }, [])
 
   const headerAvatar2Svg = useMemo(() => {
     try {
-      const avatar = createAvatar(micah, {
+      return createAvatar(micah, {
         seed: 'Alexander',
         baseColor: ['f9b9c6'],
         hairColor: ['f4d140'],
         mouth: ['nervous']
-      })
-      return avatar.toString()
-    } catch (error) {
-      console.error('Error creating avatar 2:', error)
+      }).toString()
+    } catch {
       return ''
     }
   }, [])
