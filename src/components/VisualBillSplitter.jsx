@@ -1,75 +1,31 @@
-import { useState, useRef, useEffect } from 'react'
-import ocrService from '../services/ocrService'
-import imageProcessor from '../services/imageProcessor'
+import { useState, useEffect } from 'react'
 import AvatarToggle from './AvatarToggle'
 import './VisualBillSplitter.css'
 
-function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name, onReset }) {
+function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset }) {
   const [detectedPrices, setDetectedPrices] = useState([]) // {price, assignment, id}
-  const [isProcessing, setIsProcessing] = useState(false)
   const [totalAmount, setTotalAmount] = useState(0)
   const [manualTax, setManualTax] = useState('')
   const [tipPercentage, setTipPercentage] = useState('')
   const [manualTip, setManualTip] = useState('')
   const [tipMode, setTipMode] = useState('percentage') // 'percentage' or 'manual'
   const [manualPriceInput, setManualPriceInput] = useState('')
-  const [showManualEntry, setShowManualEntry] = useState(false)
-  const [ocrError, setOcrError] = useState(null)
   const [whoPaid, setWhoPaid] = useState(null) // null, 'person1', or 'person2'
-  const imageRef = useRef(null)
-
-  useEffect(() => {
-    if (billImage) {
-      extractAllPrices()
-    }
-  }, [billImage])
 
   useEffect(() => {
     updateTotals()
   }, [manualTax, tipPercentage, manualTip, tipMode])
 
-  const extractAllPrices = async () => {
-    if (!billImage) return
-    
-    setIsProcessing(true)
-    setOcrError(null)
-    
-    try {
-      // Automatically enhance image for better OCR accuracy
-      console.log('Enhancing image for OCR...')
-      const enhancedImage = await imageProcessor.processImageForOCR(billImage)
-      
-      // Upscale if image is too small
-      const processedImage = await imageProcessor.upscaleIfNeeded(enhancedImage)
-      
-      console.log('Running OCR on enhanced image...')
-      const { prices, total } = await ocrService.extractPrices(processedImage)
-      
-      if (prices.length === 0) {
-        setOcrError('No prices detected with OCR. Try adding them manually or use a clearer image.')
-      }
-      
-      setDetectedPrices(prices)
-      setTotalAmount(total)
-    } catch (err) {
-      console.error('Error extracting prices:', err)
-      setOcrError(`OCR Error: ${err.message || 'Failed to process image. Please try adding prices manually.'}`)
-    } finally {
-      setIsProcessing(false)
-    }
-  }
-
   const addManualPrice = () => {
     const price = parseFloat(manualPriceInput)
     if (price && price > 0) {
       const newPrice = {
-        id: `manual_${Date.now()}_${Math.random()}`,
+        id: `${Date.now()}_${Math.random()}`,
         price: price,
         assignment: 'both'
       }
       setDetectedPrices([...detectedPrices, newPrice])
       setManualPriceInput('')
-      setShowManualEntry(false)
       updateTotals([...detectedPrices, newPrice])
     }
   }
@@ -87,7 +43,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
       }
       return item
     })
-    
+
     setDetectedPrices(updated)
     updateTotals(updated)
   }
@@ -96,42 +52,42 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
     const person1Items = prices.filter(p => p.assignment === 'person1')
     const person2Items = prices.filter(p => p.assignment === 'person2')
     const sharedItems = prices.filter(p => p.assignment === 'both')
-    
+
     const person1Subtotal = person1Items.reduce((sum, p) => sum + p.price, 0)
     const person2Subtotal = person2Items.reduce((sum, p) => sum + p.price, 0)
     const sharedSubtotal = sharedItems.reduce((sum, p) => sum + p.price, 0)
-    
+
     const totalSubtotal = person1Subtotal + person2Subtotal + sharedSubtotal
     const sharedHalf = sharedSubtotal / 2
-    
+
     const person1PreTax = person1Subtotal + sharedHalf
     const person2PreTax = person2Subtotal + sharedHalf
-    
+
     // Calculate tax
     const taxAmount = parseFloat(manualTax) || 0
     let person1Tax = 0
     let person2Tax = 0
-    
+
     if (taxAmount > 0 && totalSubtotal > 0) {
       const taxRate = taxAmount / totalSubtotal
       person1Tax = person1PreTax * taxRate
       person2Tax = person2PreTax * taxRate
     }
-    
+
     const person1WithTax = person1PreTax + person1Tax
     const person2WithTax = person2PreTax + person2Tax
-    
+
     // Calculate tip
     let person1Tip = 0
     let person2Tip = 0
     let totalTip = 0
     const tipPercent = parseFloat(tipPercentage) || 0
     const tipAmount = parseFloat(manualTip) || 0
-    
+
     if (tipMode === 'percentage' && tipPercent > 0) {
       const baseForTip = person1WithTax + person2WithTax
       totalTip = baseForTip * (tipPercent / 100)
-      
+
       if (totalTip > 0 && baseForTip > 0) {
         person1Tip = (person1WithTax / baseForTip) * totalTip
         person2Tip = (person2WithTax / baseForTip) * totalTip
@@ -139,13 +95,13 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
     } else if (tipMode === 'manual' && tipAmount > 0) {
       totalTip = tipAmount
       const baseForTip = person1WithTax + person2WithTax
-      
+
       if (baseForTip > 0) {
         person1Tip = (person1WithTax / baseForTip) * totalTip
         person2Tip = (person2WithTax / baseForTip) * totalTip
       }
     }
-    
+
     return {
       person1Subtotal,
       person2Subtotal,
@@ -169,17 +125,17 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
 
   const updateTotals = (prices = detectedPrices) => {
     const totals = calculateTotals(prices)
-    
+
     const items = prices.map(p => ({
       name: `$${p.price.toFixed(2)}`,
       price: p.price,
       assignment: p.assignment
     }))
-    
+
     onItemsReady(
-      items, 
-      totals.totalSubtotal, 
-      totals.taxAmount, 
+      items,
+      totals.totalSubtotal,
+      totals.taxAmount,
       totals.person1Final + totals.person2Final,
       totals.totalTip
     )
@@ -209,189 +165,111 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
     <div className="visual-splitter-container">
       <div className="instructions">
         <h3>💰 Bill Items</h3>
-        {isProcessing ? (
-          <p className="processing">Scanning bill for prices...</p>
-        ) : detectedPrices.length > 0 ? (
+        {detectedPrices.length > 0 ? (
           <p>Click prices to toggle: <strong>Both</strong> → <strong>{person1Name}</strong> → <strong>{person2Name}</strong> → <strong>Both</strong></p>
-        ) : ocrError ? (
-          <p className="error-text">{ocrError}</p>
-        ) : billImage ? (
-          <p>Upload a bill image to automatically detect prices, or add them manually below.</p>
         ) : (
           <p>Add items manually using the form below. Click avatars to assign items to {person1Name}, {person2Name}, or both.</p>
         )}
       </div>
 
-      {!isProcessing && (
-        <>
-          {/* Who Paid Selector */}
-          <div className="who-paid-section">
-            <label className="who-paid-label">Who paid for this bill?</label>
-            <div className="who-paid-buttons">
-              <button
-                className={`who-paid-button ${whoPaid === 'person1' ? 'active' : ''}`}
-                onClick={() => setWhoPaid(whoPaid === 'person1' ? null : 'person1')}
-              >
-                <AvatarToggle
-                  assignment="person1"
-                  person1Name={person1Name}
-                  person2Name={person2Name}
-                  onClick={() => {}}
-                />
-                <span>{person1Name}</span>
-              </button>
-              <button
-                className={`who-paid-button ${whoPaid === 'person2' ? 'active' : ''}`}
-                onClick={() => setWhoPaid(whoPaid === 'person2' ? null : 'person2')}
-              >
-                <AvatarToggle
-                  assignment="person2"
-                  person1Name={person1Name}
-                  person2Name={person2Name}
-                  onClick={() => {}}
-                />
-                <span>{person2Name}</span>
-              </button>
-            </div>
-          </div>
-        </>
-      )}
-
-      {isProcessing && (
-        <div className="processing-container">
-          <div className="spinner"></div>
-          <p>Enhancing image and extracting prices...</p>
-          <p className="processing-subtext">Auto-adjusting contrast, brightness, and resolution for better OCR accuracy</p>
+      {/* Who Paid Selector */}
+      <div className="who-paid-section">
+        <label className="who-paid-label">Who paid for this bill?</label>
+        <div className="who-paid-buttons">
+          <button
+            className={`who-paid-button ${whoPaid === 'person1' ? 'active' : ''}`}
+            onClick={() => setWhoPaid(whoPaid === 'person1' ? null : 'person1')}
+          >
+            <AvatarToggle
+              assignment="person1"
+              person1Name={person1Name}
+              person2Name={person2Name}
+              onClick={() => {}}
+            />
+            <span>{person1Name}</span>
+          </button>
+          <button
+            className={`who-paid-button ${whoPaid === 'person2' ? 'active' : ''}`}
+            onClick={() => setWhoPaid(whoPaid === 'person2' ? null : 'person2')}
+          >
+            <AvatarToggle
+              assignment="person2"
+              person1Name={person1Name}
+              person2Name={person2Name}
+              onClick={() => {}}
+            />
+            <span>{person2Name}</span>
+          </button>
         </div>
-      )}
+      </div>
 
-      {/* Prices List - Shows OCR + Manual prices together */}
+      {/* Prices List */}
       {detectedPrices.length > 0 && (
-        <>
-          {billImage && (
-            <div className="bill-preview">
-              <img
-                ref={imageRef}
-                src={billImage}
-                alt="Bill preview"
-                className="bill-image-small"
-              />
-            </div>
-          )}
-
-          <div className="prices-list">
-            <h3>All Items ({detectedPrices.length})</h3>
-            <p className="prices-hint">OCR-detected and manually added prices combined</p>
-            <div className="prices-grid">
-              {detectedPrices.map((item) => (
-                <div
-                  key={item.id}
-                  className="price-item"
-                  style={{ borderLeftColor: getAssignmentColor(item.assignment) }}
-                >
-                  <div className="price-row">
-                    <AvatarToggle
-                      assignment={item.assignment}
-                      person1Name={person1Name}
-                      person2Name={person2Name}
-                      onClick={() => toggleAssignment(item.id)}
-                    />
-                    <div className="price-header">
-                      <div className="price-value-large">
-                        ${item.price.toFixed(2)}
-                      </div>
-                      {item.id.startsWith('manual_') && (
-                        <span className="manual-badge" title="Manually added">✏️</span>
-                      )}
+        <div className="prices-list">
+          <h3>All Items ({detectedPrices.length})</h3>
+          <div className="prices-grid">
+            {detectedPrices.map((item) => (
+              <div
+                key={item.id}
+                className="price-item"
+                style={{ borderLeftColor: getAssignmentColor(item.assignment) }}
+              >
+                <div className="price-row">
+                  <AvatarToggle
+                    assignment={item.assignment}
+                    person1Name={person1Name}
+                    person2Name={person2Name}
+                    onClick={() => toggleAssignment(item.id)}
+                  />
+                  <div className="price-header">
+                    <div className="price-value-large">
+                      ${item.price.toFixed(2)}
                     </div>
                   </div>
-                  <button
-                    className="remove-price-button"
-                    onClick={() => removePrice(item.id)}
-                    title="Remove"
-                  >
-                    ✕
-                  </button>
                 </div>
-              ))}
-            </div>
+                <button
+                  className="remove-price-button"
+                  onClick={() => removePrice(item.id)}
+                  title="Remove"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
           </div>
-        </>
+        </div>
       )}
 
       {/* Manual Entry Section */}
       <div className="manual-entry-section">
-        {billImage ? (
-          <>
-            <button
-              onClick={() => setShowManualEntry(!showManualEntry)}
-              className="toggle-manual-button"
-            >
-              {showManualEntry ? '−' : '+'} Add Price Manually
-            </button>
-            
-            {showManualEntry && (
-              <div className="manual-entry-form">
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  step="0.01"
-                  min="0"
-                  placeholder="Enter price (e.g., 12.99)"
-                  value={manualPriceInput}
-                  onChange={(e) => setManualPriceInput(e.target.value)}
-                  className="manual-price-input"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      addManualPrice()
-                    }
-                  }}
-                />
-                <button
-                  onClick={addManualPrice}
-                  disabled={!manualPriceInput || parseFloat(manualPriceInput) <= 0}
-                  className="add-manual-button"
-                >
-                  Add
-                </button>
-              </div>
-            )}
-            <p className="manual-entry-hint">
-              Add any prices that OCR missed or items not shown on the bill
-            </p>
-          </>
-        ) : (
-          <>
-            <h3 className="manual-entry-title">Add Items Manually</h3>
-            <div className="manual-entry-form">
-              <input
-                type="number"
-                inputMode="decimal"
-                step="0.01"
-                min="0"
-                placeholder="Enter price (e.g., 12.99)"
-                value={manualPriceInput}
-                onChange={(e) => setManualPriceInput(e.target.value)}
-                className="manual-price-input"
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    addManualPrice()
-                  }
-                }}
-              />
-              <button
-                onClick={addManualPrice}
-                disabled={!manualPriceInput || parseFloat(manualPriceInput) <= 0}
-                className="add-manual-button"
-              >
-                Add Item
-              </button>
-            </div>
-            <p className="manual-entry-hint">
-              Enter each item price and click "Add Item" to add it to your bill
-            </p>
-          </>
-        )}
+        <h3 className="manual-entry-title">Add Items Manually</h3>
+        <div className="manual-entry-form">
+          <input
+            type="number"
+            inputMode="decimal"
+            step="0.01"
+            min="0"
+            placeholder="Enter price (e.g., 12.99)"
+            value={manualPriceInput}
+            onChange={(e) => setManualPriceInput(e.target.value)}
+            className="manual-price-input"
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                addManualPrice()
+              }
+            }}
+          />
+          <button
+            onClick={addManualPrice}
+            disabled={!manualPriceInput || parseFloat(manualPriceInput) <= 0}
+            className="add-manual-button"
+          >
+            Add Item
+          </button>
+        </div>
+        <p className="manual-entry-hint">
+          Enter each item price and click "Add Item" to add it to your bill
+        </p>
       </div>
 
       {/* Tax Input */}
@@ -440,7 +318,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
               </button>
             </div>
           </div>
-          
+
           {tipMode === 'percentage' ? (
             <div className="tip-input-group">
               <input
@@ -527,7 +405,7 @@ function VisualBillSplitter({ billImage, onItemsReady, person1Name, person2Name,
               </div>
             </div>
           </div>
-          
+
           <div className="summary-card person2-summary">
             <h4>{person2Name}</h4>
             <div className="summary-breakdown">
