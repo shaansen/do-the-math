@@ -151,9 +151,9 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
   }
 
   const getAssignmentColor = (assignment) => {
-    if (assignment === 'person1') return '#4caf50'
-    if (assignment === 'person2') return '#f44336'
-    return '#ff9800'
+    if (assignment === 'person1') return '#00b894'
+    if (assignment === 'person2') return '#e17055'
+    return '#fdcb6e'
   }
 
   const grandTotal = totals.person1Final + totals.person2Final
@@ -161,6 +161,36 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
 
   return (
     <div className="visual-splitter-container">
+      <div className="who-paid-section">
+        <label className="who-paid-label">Who paid for this bill?</label>
+        <div className="who-paid-buttons">
+          <button
+            className={`who-paid-button ${whoPaid === 'person1' ? 'active' : ''}`}
+            onClick={() => setWhoPaid(whoPaid === 'person1' ? null : 'person1')}
+          >
+            <AvatarToggle
+              assignment="person1"
+              person1Name={person1Name}
+              person2Name={person2Name}
+              onClick={() => {}}
+            />
+            <span>{person1Name}</span>
+          </button>
+          <button
+            className={`who-paid-button ${whoPaid === 'person2' ? 'active' : ''}`}
+            onClick={() => setWhoPaid(whoPaid === 'person2' ? null : 'person2')}
+          >
+            <AvatarToggle
+              assignment="person2"
+              person1Name={person1Name}
+              person2Name={person2Name}
+              onClick={() => {}}
+            />
+            <span>{person2Name}</span>
+          </button>
+        </div>
+      </div>
+
       <div className="manual-entry-section">
         <h3 className="manual-entry-title">Add Items</h3>
         <div className="manual-entry-form">
@@ -249,36 +279,6 @@ function VisualBillSplitter({ onItemsReady, person1Name, person2Name, onReset })
           </div>
         </div>
       )}
-
-      <div className="who-paid-section">
-        <label className="who-paid-label">Who paid for this bill?</label>
-        <div className="who-paid-buttons">
-          <button
-            className={`who-paid-button ${whoPaid === 'person1' ? 'active' : ''}`}
-            onClick={() => setWhoPaid(whoPaid === 'person1' ? null : 'person1')}
-          >
-            <AvatarToggle
-              assignment="person1"
-              person1Name={person1Name}
-              person2Name={person2Name}
-              onClick={() => {}}
-            />
-            <span>{person1Name}</span>
-          </button>
-          <button
-            className={`who-paid-button ${whoPaid === 'person2' ? 'active' : ''}`}
-            onClick={() => setWhoPaid(whoPaid === 'person2' ? null : 'person2')}
-          >
-            <AvatarToggle
-              assignment="person2"
-              person1Name={person1Name}
-              person2Name={person2Name}
-              onClick={() => {}}
-            />
-            <span>{person2Name}</span>
-          </button>
-        </div>
-      </div>
 
       <div className="manual-input-section">
         <label className="input-label">

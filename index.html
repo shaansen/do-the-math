@@ -3,27 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <meta name="description" content="Help Charlie and Shantanu split bills. Take a photo, assign items, and automatically calculate the split." />
-    <meta name="theme-color" content="#667eea" />
-    
-    <!-- iOS Home Screen Icons -->
+    <meta name="description" content="Help Charlie and Shantanu split bills easily." />
+    <meta name="theme-color" content="#6C5CE7" />
+
     <link rel="apple-touch-icon" sizes="180x180" href="/do-the-math/apple-touch-icon.png" />
-    
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/do-the-math/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/do-the-math/favicon-16x16.png" />
-    
-    <!-- Web App Manifest -->
     <link rel="manifest" href="/do-the-math/manifest.json" />
-    
-    <!-- iOS Safari Meta Tags -->
+
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Do the math" />
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
     <title>Do the math</title>
     <style>
-      /* Loading fallback while React loads */
       #root:empty::before {
         content: '';
         display: block;
@@ -32,7 +29,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #6C5CE7 0%, #a855f7 100%);
         z-index: 9999;
       }
       #root:empty::after {
@@ -44,12 +41,11 @@
         left: 50%;
         transform: translate(-50%, -50%);
         color: white;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        font-family: 'DM Serif Display', Georgia, serif;
         font-size: 1.5rem;
         text-align: center;
         z-index: 10000;
       }
-      /* Hide loading when app loads */
       #root:not(:empty)::before,
       #root:not(:empty)::after {
         display: none;
@@ -63,10 +59,10 @@
   </head>
   <body>
     <noscript>
-      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);color:white;font-family:sans-serif;padding:2rem;text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg, #6C5CE7 0%, #a855f7 100%);color:white;font-family:sans-serif;padding:2rem;text-align:center;">
         <div>
           <h1>Do the math</h1>
-          <p>JavaScript is required to run this app. Please enable JavaScript in your browser settings.</p>
+          <p>JavaScript is required to run this app.</p>
         </div>
       </div>
     </noscript>
@@ -74,4 +70,3 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-

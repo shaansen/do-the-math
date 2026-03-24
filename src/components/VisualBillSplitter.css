@@ -13,19 +13,19 @@
 }
 
 .instructions h3 {
-  color: #333;
+  color: #2d3436;
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
 }
 
 .instructions p {
-  color: #666;
+  color: #636e72;
   margin: 0;
   line-height: 1.6;
 }
 
 .error-text {
-  color: #f44336;
+  color: #e17055;
   font-weight: 500;
   margin: 0;
 }
@@ -42,7 +42,7 @@
 }
 
 .prices-list-header h3 {
-  color: #333;
+  color: #2d3436;
   font-size: 1.2rem;
   margin-bottom: 0.25rem;
 }
@@ -60,7 +60,7 @@
   padding: 1rem;
   background: #f8f9fa;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #6C5CE7;
   transition: all 0.2s;
   position: relative;
 }
@@ -82,21 +82,22 @@
 .price-value-large {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #333;
+  color: #2d3436;
   text-align: left;
   cursor: pointer;
   transition: color 0.2s;
+  font-variant-numeric: tabular-nums;
 }
 
 .price-value-large:hover {
-  color: #667eea;
+  color: #6C5CE7;
 }
 
 .price-edit-input {
   font-size: 1.5rem;
   font-weight: 700;
   padding: 0.25rem 0.5rem;
-  border: 2px solid #667eea;
+  border: 2px solid #6C5CE7;
   border-radius: 6px;
   width: 120px;
   outline: none;
@@ -170,7 +171,7 @@
 }
 
 .summary-card h4 {
-  color: #666;
+  color: #636e72;
   font-size: 0.9rem;
   margin-bottom: 0.75rem;
   font-weight: 500;
@@ -179,15 +180,16 @@
 .summary-amount {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #333;
+  color: #2d3436;
+  font-variant-numeric: tabular-nums;
 }
 
 .person1-summary {
-  border-top: 4px solid #4caf50;
+  border-top: 4px solid #00b894;
 }
 
 .person2-summary {
-  border-top: 4px solid #f44336;
+  border-top: 4px solid #e17055;
 }
 
 .shared-summary {
@@ -195,7 +197,7 @@
 }
 
 .total-display {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6C5CE7 0%, #a855f7 100%);
   color: white;
   padding: 1.5rem;
   border-radius: 12px;
@@ -227,7 +229,7 @@
 
 .clear-button {
   background: #f0f0f0;
-  color: #333;
+  color: #2d3436;
 }
 
 .clear-button:hover {
@@ -242,7 +244,7 @@
 }
 
 .reset-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6C5CE7 0%, #a855f7 100%);
   color: white;
 }
 
@@ -282,7 +284,7 @@
 }
 
 .manual-entry-title {
-  color: #333;
+  color: #2d3436;
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: 600;
@@ -305,12 +307,12 @@
 
 .manual-price-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #6C5CE7;
 }
 
 .add-manual-button {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6C5CE7 0%, #a855f7 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -355,7 +357,7 @@
   padding: 0.5rem 1rem;
   border: 2px solid #e0e0e0;
   background: white;
-  color: #666;
+  color: #636e72;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 500;
@@ -364,13 +366,13 @@
 }
 
 .tip-mode-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #6C5CE7;
+  color: #6C5CE7;
 }
 
 .tip-mode-btn.active {
-  border-color: #667eea;
-  background: #667eea;
+  border-color: #6C5CE7;
+  background: #6C5CE7;
   color: white;
 }
 
@@ -382,7 +384,7 @@
 
 .input-label span {
   font-weight: 600;
-  color: #333;
+  color: #2d3436;
   font-size: 1rem;
 }
 
@@ -399,7 +401,7 @@
 .tax-input:focus,
 .tip-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #6C5CE7;
 }
 
 .tip-input-group {
@@ -420,9 +422,9 @@
 
 .quick-tip-btn {
   padding: 0.5rem 1rem;
-  border: 2px solid #667eea;
+  border: 2px solid #6C5CE7;
   background: white;
-  color: #667eea;
+  color: #6C5CE7;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -432,7 +434,7 @@
 }
 
 .quick-tip-btn:hover {
-  background: #667eea;
+  background: #6C5CE7;
   color: white;
 }
 
@@ -441,7 +443,7 @@
   padding: 0.75rem;
   background: #f0f4ff;
   border-radius: 8px;
-  color: #667eea;
+  color: #6C5CE7;
   font-weight: 600;
   text-align: center;
 }
@@ -456,7 +458,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  color: #666;
+  color: #636e72;
   padding: 0.25rem 0;
 }
 
@@ -466,24 +468,24 @@
 
 .summary-line span:last-child {
   font-weight: 600;
-  color: #333;
+  color: #2d3436;
 }
 
 .summary-amount {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #333;
+  color: #2d3436;
   margin-top: 0.5rem;
   padding-top: 0.75rem;
   border-top: 2px solid #e0e0e0;
 }
 
 .person1-summary .summary-amount {
-  color: #4caf50;
+  color: #00b894;
 }
 
 .person2-summary .summary-amount {
-  color: #f44336;
+  color: #e17055;
 }
 
 .manual-entry-hint,
@@ -491,7 +493,7 @@
 .prices-hint {
   margin-top: 0.5rem;
   font-size: 0.85rem;
-  color: #666;
+  color: #636e72;
   font-style: italic;
 }
 
@@ -521,7 +523,7 @@
 .who-paid-label {
   display: block;
   font-weight: 600;
-  color: #333;
+  color: #2d3436;
   font-size: 1rem;
   margin-bottom: 1rem;
   text-align: center;
@@ -535,7 +537,6 @@
 
 .who-paid-button {
   flex: 1;
-  max-width: 200px;
   padding: 1rem;
   border: 2px solid #e0e0e0;
   background: white;
@@ -550,33 +551,33 @@
 }
 
 .who-paid-button:hover {
-  border-color: #667eea;
+  border-color: #6C5CE7;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .who-paid-button.active {
-  border-color: #667eea;
+  border-color: #6C5CE7;
   background: rgba(102, 126, 234, 0.1);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-}
-
-.who-paid-button span {
-  font-weight: 600;
-  color: #333;
-  font-size: 1rem;
-}
-
-.who-paid-button.active span {
-  color: #667eea;
 }
 
 .who-paid-button .avatar-toggle {
   pointer-events: none;
 }
 
+.who-paid-button span {
+  font-weight: 600;
+  color: #2d3436;
+  font-size: 1rem;
+}
+
+.who-paid-button.active span {
+  color: #6C5CE7;
+}
+
 .payment-summary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6C5CE7 0%, #a855f7 100%);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -603,6 +604,7 @@
   font-weight: 700;
   color: white;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-variant-numeric: tabular-nums;
 }
 
 .payment-text {
@@ -641,21 +643,22 @@
 
 .sticky-name {
   font-size: 0.75rem;
-  color: #666;
+  color: #636e72;
   font-weight: 500;
 }
 
 .sticky-amount {
   font-size: 1.1rem;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .person1-color {
-  color: #4caf50;
+  color: #00b894;
 }
 
 .person2-color {
-  color: #f44336;
+  color: #e17055;
 }
 
 .sticky-total {
@@ -670,25 +673,18 @@
 
 .sticky-total-label {
   font-size: 0.75rem;
-  color: #666;
+  color: #636e72;
   font-weight: 500;
 }
 
 .sticky-total-amount {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #333;
+  color: #2d3436;
+  font-variant-numeric: tabular-nums;
 }
 
 @media (max-width: 768px) {
-  .who-paid-buttons {
-    flex-direction: column;
-  }
-
-  .who-paid-button {
-    max-width: 100%;
-  }
-
   .payment-amount {
     font-size: 2rem;
   }
